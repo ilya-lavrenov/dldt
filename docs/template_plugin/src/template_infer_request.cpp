@@ -71,17 +71,20 @@ void TemplateInferRequest::allocateDeviceBuffers() {
 
 template<typename BlobDataMap, typename GetNetworkPrecisionF>
 static void AllocateImpl(const BlobDataMap& blobDataMap,
-                         BlobMap& blobMap,
+                         BlobMap& userBlobMap,
                          BlobMap& networkBlobMap,
                          GetNetworkPrecisionF&& GetNetworkPrecision) {
     for (auto&& blobData : blobDataMap) {
         auto& dims = blobData.second->getTensorDesc().getDims();
         auto& precision = blobData.second->getTensorDesc().getPrecision();
         auto layout = blobData.second->getTensorDesc().getLayout();
+
+        // allocate user blobs (available via GetBlob)
+
         Blob::Ptr blob;
         switch (precision) {
         case Precision::U8: {
-            blob = InferenceEngine::make_shared_blob<std::uint8_t>({precision, dims, layout});
+            blob = InferenceEngine::make_shared_blob<std::uint8_t>({Precision::FP32, dims, layout});
         } break;
         case Precision::FP32 : {
             blob = InferenceEngine::make_shared_blob<float>({precision, dims, layout});
@@ -89,7 +92,17 @@ static void AllocateImpl(const BlobDataMap& blobDataMap,
         default: THROW_IE_EXCEPTION << "Template Plugin: Unsupported Input/Output Presision";
         }
         blob->allocate();
-        blobMap[blobData.first] = blob;
+        userBlobMap[blobData.first] = blob;
+
+        auto toDeviceLayout = [] (const Layout & layout) {
+            // if (layout == Layout::NHWC) {
+            //     return Layout::NCHW;
+            // }
+
+            return layout;
+        };
+
+        // allocate device blobs (used as input for device)
 
         auto networkPresion = GetNetworkPrecision(blobData.first);
         Blob::Ptr networkBlob;
@@ -98,7 +111,8 @@ static void AllocateImpl(const BlobDataMap& blobDataMap,
             if (precision == Precision::FP32) {
                 networkBlob = blob;
             } else {
-                networkBlob = InferenceEngine::make_shared_blob<float>({Precision::FP32, dims, layout});
+                networkBlob = InferenceEngine::make_shared_blob<float>(
+                    {Precision::FP32, dims, toDeviceLayout(layout)});
             }
         } break;
         default: THROW_IE_EXCEPTION << "Template Plugin: Unsupported network Input/Output Presision";
@@ -115,6 +129,7 @@ void TemplateInferRequest::allocateBlobs() {
     AllocateImpl(_networkInputs, _inputs, _deviceInputs, [&] (const std::string& blobName) {
         return parameters.at(_executableNetwork->_inputIndex.at(blobName))->get_element_type();
     });
+
     auto&& results = _executableNetwork->_function->get_results();
     AllocateImpl(_networkOutputs, _outputs, _networkOutputBlobs, [&] (const std::string& blobName) {
         return results.at(_executableNetwork->_outputIndex.at(blobName))->get_element_type();
