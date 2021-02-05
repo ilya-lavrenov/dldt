@@ -8,11 +8,14 @@ set(TARGET_NAME opencv_c_wraper)
 file(GLOB SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 file(GLOB HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/*.h)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -D_GLIBCXX_USE_CXX11_ABI=0")
+
 # create library
 add_library(${TARGET_NAME} SHARED ${HEADERS} ${SOURCES})
 
 # Find OpenCV components if exist
-find_package(OpenCV COMPONENTS imgcodecs videoio  QUIET)
+find_package(OpenCV COMPONENTS imgcodecs videoio QUIET)
 if(NOT OpenCV_FOUND)
     message(WARNING "OPENCV is disabled or not found, ${TARGET_NAME} is built without OPENCV support")
 else()
@@ -26,5 +29,5 @@ target_include_directories(${TARGET_NAME} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")
 set_target_properties(${TARGET_NAME} PROPERTIES FOLDER c_samples)
 
 if(COMMAND add_cpplint_target)
-	add_cpplint_target(${TARGET_NAME}_cpplint FOR_TARGETS ${TARGET_NAME})
+    add_cpplint_target(${TARGET_NAME}_cpplint FOR_TARGETS ${TARGET_NAME})
 endif()
