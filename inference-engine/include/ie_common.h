@@ -1,4 +1,4 @@
-// Copyright (C) 2018-2020 Intel Corporation
+// Copyright (C) 2018-2021 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 
@@ -16,6 +16,8 @@
 #include <string>
 #include <vector>
 #include <map>
+
+#include "ie_api.h"
 
 namespace InferenceEngine {
 /**
@@ -87,7 +89,7 @@ enum Layout : uint8_t {
 
     // 2D
     HW = 192,  //!< HW 2D layout
-    NC = 193,  //!< HC 2D layout
+    NC = 193,  //!< NC 2D layout
     CN = 194,  //!< CN 2D layout
 
     BLOCKED = 200,  //!< A blocked layout
@@ -107,17 +109,28 @@ inline std::ostream& operator<<(std::ostream& out, const Layout& p) {
         break;
 
         PRINT_LAYOUT(ANY);
+
         PRINT_LAYOUT(NCHW);
         PRINT_LAYOUT(NHWC);
         PRINT_LAYOUT(NCDHW);
         PRINT_LAYOUT(NDHWC);
+
         PRINT_LAYOUT(OIHW);
+        PRINT_LAYOUT(GOIHW);
+        PRINT_LAYOUT(OIDHW);
+        PRINT_LAYOUT(GOIDHW);
+
+        PRINT_LAYOUT(SCALAR);
+
         PRINT_LAYOUT(C);
+
         PRINT_LAYOUT(CHW);
         PRINT_LAYOUT(HWC);
+
         PRINT_LAYOUT(HW);
         PRINT_LAYOUT(NC);
         PRINT_LAYOUT(CN);
+
         PRINT_LAYOUT(BLOCKED);
 #undef PRINT_LAYOUT
     default:

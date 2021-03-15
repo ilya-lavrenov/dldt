@@ -1,13 +1,280 @@
-// Copyright (C) 2018-2020 Intel Corporation
+// Copyright (C) 2018-2021 Intel Corporation
 // SPDX-License-Identifier: Apache-2.0
 //
 
 #include "ie_layouts.h"
+#include "ie_common.h"
+
+#include "debug.h"
 
 #include <algorithm>
 #include <map>
 
 using namespace InferenceEngine;
+
+/////////////////////////////////////////////////////////////////////////////////
+
+static constexpr char BATCH[] = "BATCH";
+static constexpr char CHANNELS[] = "CHANNELS";
+static constexpr char WIDTH[] = "WIDTH";
+static constexpr char HEIGHT[] = "HEIGHT";
+static constexpr char DEPTH[] = "DEPTH";
+static constexpr char SCALAR[] = "SCALAR";
+static constexpr char ANY[] = "ANY";
+static constexpr char BLOCKED[] = "BLOCKED";
+
+PartialLayout::PartialLayout(const SizeVector & order) : _order(order) {
+}
+
+// 1. only order of dimensions "adbc" (0312)
+// 2. can define order and meaning for dimensions "NCHW"
+// 3. partial layout specialization "NC?"
+PartialLayout::PartialLayout(const std::string & layoutStr) {
+    initFromStr(layoutStr);
+}
+
+// defines:
+// 1. order of dimensions
+// 2. name for dimensions
+PartialLayout::PartialLayout(Layout layout) {
+    std::stringstream stream;
+    stream << layout << std::endl;
+
+    initFromStr(stream.str());
+}
+
+void PartialLayout::initFromStr(const std::string & _layoutStr) {
+    if (_layoutStr.empty()) {
+        THROW_IE_EXCEPTION << "Cannot parse InferenceEngine::PartialLayout from an empty string";
+    }
+
+    std::string layoutStr = _layoutStr;
+    details::trim(layoutStr);
+
+    // special case
+    if (layoutStr == ::SCALAR) {
+        setDimensionIndexByName(::SCALAR, 0);
+        return;
+    } else if (layoutStr == ::ANY) {
+        // nothing to do
+        return;
+    } else if (layoutStr == ::BLOCKED) {
+        THROW_IE_EXCEPTION << "Cannot create from InferenceEngine::Layout::BLOCKED";
+    }
+
+    const size_t numDims = layoutStr.length();
+    // if it's NCDHW-like variations
+    const bool ncdhwLikeLayout = std::all_of(layoutStr.cbegin(), layoutStr.cend(),
+        [] (char c) -> bool {
+            return c == 'C' || c == 'H' || c == 'W' ||
+                   c == 'N' || c == 'D' || c == '?';
+        });
+
+    auto setDimensionNames = [&layoutStr, numDims, this] () {
+        // fill dimension names
+        for (size_t i = 0; i < numDims; ++i) {
+            if (layoutStr[i] == 'N')
+                setDimensionIndexByName(BATCH, i);
+            else if (layoutStr[i] == 'C')
+                setDimensionIndexByName(CHANNELS, i);
+            else if (layoutStr[i] == 'D')
+                setDimensionIndexByName(DEPTH, i);
+            else if (layoutStr[i] == 'H')
+                setDimensionIndexByName(HEIGHT, i);
+            else if (layoutStr[i] == 'W')
+                setDimensionIndexByName(WIDTH, i);
+        }
+    };
+
+    if (ncdhwLikeLayout) {
+        // set only names for dimensions
+        setDimensionNames();
+    }
+
+    auto parseOrder = [&layoutStr, numDims, ncdhwLikeLayout, this] (const std::string & refFullOrder) {
+        // only if it's fully specified, we can detect the order
+        const bool isLayoutFullySpecialized = layoutStr.find('?') == std::string::npos;
+
+        if (isLayoutFullySpecialized) {
+            std::string refOrder;
+
+            std::copy_if(refFullOrder.begin(), refFullOrder.end(),
+                std::back_inserter(refOrder), [&layoutStr] (char dim) -> bool {
+                    return layoutStr.find(dim) != std::string::npos;
+                });
+
+            const size_t SPECIAL_VALUE = 100000;
+            _order.resize(numDims, SPECIAL_VALUE);
+            for (size_t i = 0; i < numDims; ++i) {
+                for (size_t j = 0; j < numDims; ++j)
+                    if (refOrder[j] == layoutStr[i]) {
+                        _order[i] = j;
+                        break;
+                    }
+            }
+        } else if (!ncdhwLikeLayout) {
+            THROW_IE_EXCEPTION << "Cannot parse PartialLayout from " << layoutStr;
+        }
+    };
+
+    if (ncdhwLikeLayout) {
+        parseOrder("NCDHW");
+    } else {
+        // parse ABCD... like order
+        std::string refFullOrder(numDims, 'A');
+        for (size_t i = 1; i < numDims; ++i) {
+            refFullOrder[i] += i;
+        }
+        parseOrder(refFullOrder);
+    }
+}
+
+PartialLayout::operator Layout () const {
+    if (!isInitialized()) {
+        return Layout::ANY;
+    }
+
+    Layout layout = Layout::BLOCKED;
+    switch (_order.size()) {
+    case 0:
+        layout = Layout::SCALAR;
+        break;
+    case 1:
+        layout = Layout::C;
+        break;
+    case 2:
+        if (_order[0] == 0 && _order[1] == 1)
+            layout = hasBatch() ? Layout::NC : Layout::HW;
+        else
+            layout = Layout::CN;
+        break;
+    case 3:
+        if (_order[0] == 0 && _order[1] == 1 && _order[2] == 2) {
+            layout = Layout::CHW;
+        } else if (_order[0] == 1 && _order[1] == 2 && _order[2] == 0) {
+            layout = Layout::HWC;
+        }
+        break;
+    case 4:
+        if (_order[0] == 0 && _order[1] == 1 && _order[2] == 2 && _order[3] == 3) {
+            layout = Layout::NCHW;
+        } else if (_order[0] == 0 && _order[1] == 2 && _order[2] == 3 && _order[3] == 1) {
+            layout = Layout::NHWC;
+        }
+        break;
+    case 5:
+        if (_order[0] == 0 && _order[1] == 1 && _order[2] == 2 && _order[3] == 3 && _order[4] == 4) {
+            layout = Layout::NCDHW;
+        } else if (_order[0] == 0 && _order[1] == 2 && _order[2] == 3 && _order[3] == 4 && _order[4] == 1) {
+            layout = Layout::NDHWC;
+        }
+        break;
+    default:
+        break;
+    }
+
+    std::stringstream stream;
+    stream << layout;
+    const std::string layoutStr = stream.str();
+
+    for (size_t i = 0; i < rank(); ++i) {
+        if (layoutStr[i] == 'N') {
+            if (!hasBatch() || batch() != i)
+                return Layout::BLOCKED;
+        } else if (layoutStr[i] == 'C') {
+            if (!hasChannels() || channels() != i)
+                return Layout::BLOCKED;
+        } else if (layoutStr[i] == 'H') {
+            if (!hasHeight() || height() != i)
+                return Layout::BLOCKED;
+        } else if (layoutStr[i] == 'W') {
+            if (!hasWidth() || width() != i)
+                return Layout::BLOCKED;
+        } else if (layoutStr[i] == 'D') {
+            if (!hasDepth() || depth() != i)
+                return Layout::BLOCKED;
+        }
+    }
+
+    return layout;
+}
+
+const SizeVector & PartialLayout::getOrder() const {
+    return _order;
+}
+
+SizeVector PartialLayout::convertToOrder(const SizeVector & toOrder) const {
+    SizeVector retVal;
+
+    if (rank() == 0) {
+        return retVal;
+    }
+
+    retVal.resize(rank());
+    for (size_t i = 0; i < rank(); ++i) {
+        for (size_t j = 0; j < rank(); ++j) {
+            // if current layout is NHWC (0231), we can create transpose(0312)
+            if (toOrder[i] == _order[j]) {
+                retVal[i] = j;
+                break;
+            }
+        }
+    }
+
+    return retVal;
+}
+
+size_t PartialLayout::getDimensionIndexByName(const std::string & name) const {
+    auto it = _dimensionNames.find(name);
+    if (it == _dimensionNames.end()) {
+        THROW_IE_EXCEPTION << name << " dimension index is not defined";
+    }
+    return it->second;
+}
+
+void PartialLayout::setDimensionIndexByName(const std::string & dimensionName, size_t index) {
+    auto it = _dimensionNames.find(dimensionName);
+
+    // we cannot change dimension index
+    if (it != _dimensionNames.end() && it->second != index) {
+        THROW_IE_EXCEPTION << "Cannot change " << dimensionName << " dimension index";
+    }
+
+    _dimensionNames[dimensionName] = index;
+}
+
+#define DEFINE_NAMED_DEMINSION(NAME, Name, name)                      \
+    bool PartialLayout::has ## Name() const {                         \
+        return _dimensionNames.find(NAME) != _dimensionNames.end();   \
+    }                                                                 \
+                                                                      \
+    size_t PartialLayout::name() const {                                 \
+        return getDimensionIndexByName(NAME);                         \
+    }                                                                 \
+                                                                      \
+    void PartialLayout::set ## Name(size_t index) {                      \
+        setDimensionIndexByName(NAME, index);                         \
+    }
+
+DEFINE_NAMED_DEMINSION(BATCH, Batch, batch)
+DEFINE_NAMED_DEMINSION(CHANNELS, Channels, channels)
+DEFINE_NAMED_DEMINSION(DEPTH, Depth, depth)
+DEFINE_NAMED_DEMINSION(HEIGHT, Height, height)
+DEFINE_NAMED_DEMINSION(WIDTH, Width, width)
+
+bool PartialLayout::isScalar() const {
+    return _dimensionNames.find(::SCALAR) != _dimensionNames.end();
+}
+
+size_t PartialLayout::rank() const {
+    return _order.size();
+}
+
+bool PartialLayout::isInitialized() const {
+    return rank() != 0 || isScalar();
+}
+
+/////////////////////////////////////////////////////////////////////////////
 
 TensorDesc::TensorDesc(const Precision& precision, const SizeVector& dims, Layout layout)
     : precision(precision), blockingDesc(dims, layout) {
