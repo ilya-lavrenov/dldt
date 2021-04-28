@@ -3,10 +3,10 @@
 //
 
 /**
- * @brief A header that defines advanced related properties for DLIA plugins.
+ * @brief A header that defines advanced related properties for TEMPLATE plugin.
  * These properties should be used in SetConfig() and LoadNetwork() methods of plugins
  *
- * @file dlia_config.hpp
+ * @file template_config.hpp
  */
 
 #pragma once
