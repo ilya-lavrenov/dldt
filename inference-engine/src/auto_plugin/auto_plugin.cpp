@@ -15,7 +15,7 @@
 #include <transformations/utils/utils.hpp>
 #include <ie_icore.hpp>
 
-#include <auto_plugin/auto_config.hpp>
+#include <auto_config.hpp>
 #include "auto_plugin.hpp"
 #include "ngraph_ops/convolution_ie.hpp"
 #include "ngraph_ops/deconvolution_ie.hpp"

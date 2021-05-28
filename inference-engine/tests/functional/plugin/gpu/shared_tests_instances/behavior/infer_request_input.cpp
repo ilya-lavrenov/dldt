@@ -3,7 +3,7 @@
 //
 
 #include "multi-device/multi_device_config.hpp"
-#include <auto_plugin/auto_config.hpp>
+#include <auto_config.hpp>
 
 #include "behavior/infer_request_input.hpp"
 

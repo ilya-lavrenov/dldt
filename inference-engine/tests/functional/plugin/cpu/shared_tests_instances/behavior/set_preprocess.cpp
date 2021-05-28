@@ -3,7 +3,7 @@
 //
 
 #include "multi-device/multi_device_config.hpp"
-#include <auto_plugin/auto_config.hpp>
+#include <auto_config.hpp>
 #include <base/behavior_test_utils.hpp>
 
 #include "behavior/set_preprocess.hpp"

@@ -4,7 +4,7 @@
 
 #include "behavior/exec_graph_info.hpp"
 #include "multi-device/multi_device_config.hpp"
-#include "auto_plugin/auto_config.hpp"
+#include "auto_config.hpp"
 
 using namespace BehaviorTestsDefinitions;
 namespace {

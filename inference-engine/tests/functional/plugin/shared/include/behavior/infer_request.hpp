@@ -16,7 +16,7 @@
 #include "ngraph_functions/utils/ngraph_helpers.hpp"
 #include "ngraph_functions/builders.hpp"
 #include "multi-device/multi_device_config.hpp"
-#include "auto_plugin/auto_config.hpp"
+#include "auto_config.hpp"
 #include <string>
 #include <ie_core.hpp>
 #include <thread>

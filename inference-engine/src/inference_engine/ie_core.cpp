@@ -9,7 +9,7 @@
 #include <mutex>
 #include <sys/stat.h>
 
-#include <auto_plugin/auto_config.hpp>
+#include <auto_config.hpp>
 #include <ie_core.hpp>
 #include <ie_icore.hpp>
 #include <multi-device/multi_device_config.hpp>

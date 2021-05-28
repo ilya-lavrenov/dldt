@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 //
 
-#include "auto_plugin/auto_config.hpp"
+#include "auto_config.hpp"
 #include "multi-device/multi_device_config.hpp"
 #include "hetero/hetero_plugin_config.hpp"
 #include "behavior/version.hpp"
