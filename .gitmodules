@@ -1,7 +1,3 @@
-[submodule "inference-engine/thirdparty/mkl-dnn"]
-	path = inference-engine/thirdparty/mkl-dnn
-	url = https://github.com/openvinotoolkit/oneDNN.git
-	ignore = dirty
 [submodule "thirdparty/xbyak"]
 	path = thirdparty/xbyak
 	url = https://github.com/herumi/xbyak.git
@@ -38,3 +34,6 @@
 	path = thirdparty/ocl/clhpp_headers
 	url = https://github.com/KhronosGroup/OpenCL-CLHPP.git
 	ignore = dirty
+[submodule "thirdparty/onednn-cpu"]
+	path = thirdparty/onednn-cpu
+	uirl = https://github.com/openvinotoolkit/oneDNN.git
