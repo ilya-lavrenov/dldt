@@ -40,7 +40,7 @@ function(add_graph_transformer_target TARGET_NAME STATIC_IE)
         SYSTEM PUBLIC
             $<TARGET_PROPERTY:pugixml::static,INTERFACE_INCLUDE_DIRECTORIES>
             $<TARGET_PROPERTY:inference_engine_plugin_api,INTERFACE_INCLUDE_DIRECTORIES>
-            "${IE_MAIN_SOURCE_DIR}/thirdparty/movidius/mvnc/include")
+            "${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include")
 
     if(STATIC_IE)
         target_link_libraries(${TARGET_NAME} PUBLIC vpu_common_lib_test_static)
