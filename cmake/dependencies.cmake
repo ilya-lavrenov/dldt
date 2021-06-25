@@ -56,7 +56,7 @@ if(CMAKE_CROSSCOMPILING AND CMAKE_HOST_SYSTEM_NAME MATCHES Linux AND CMAKE_HOST_
 endif()
 
 if(ENABLE_MYRIAD)
-    include(${IE_MAIN_SOURCE_DIR}/cmake/vpu_dependencies.cmake)
+    include(${OpenVINO_SOURCE_DIR}/cmake/vpu_dependencies.cmake)
 endif()
 
 ## Intel OMP package
@@ -259,7 +259,7 @@ else()
     reset_deps_cache(OpenCV_DIR)
 endif()
 
-include(${IE_MAIN_SOURCE_DIR}/cmake/ie_parallel.cmake)
+include(${OpenVINO_SOURCE_DIR}/cmake/ie_parallel.cmake)
 
 if(ENABLE_GNA)
     reset_deps_cache(
