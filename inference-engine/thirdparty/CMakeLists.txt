@@ -38,33 +38,6 @@ if (ENABLE_CLDNN)
     add_subdirectory(clDNN)
 endif()
 
-function(ie_build_pugixml)
-    set(BUILD_TESTS_current ${BUILD_TESTS})
-    set(BUILD_TESTS OFF CACHE BOOL "Build tests" FORCE)
-    set(BUILD_SHARED_LIBS OFF)
-    add_subdirectory(pugixml EXCLUDE_FROM_ALL)
-    set(BUILD_TESTS ${BUILD_TESTS_current} CACHE BOOL "Build tests" FORCE)
-endfunction()
-
-if (USE_SYSTEM_PUGIXML)
-    find_package(PugiXML REQUIRED)
-    set_property(TARGET pugixml PROPERTY IMPORTED_GLOBAL TRUE)
-else()
-    ie_build_pugixml()
-    target_include_directories(pugixml INTERFACE "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/pugixml/src>")
-endif()
-
-# developer package
-
-if (NOT USE_SYSTEM_PUGIXML)
-    set_target_properties(pugixml PROPERTIES FOLDER thirdparty)
-    openvino_developer_export_targets(COMPONENT openvino_common TARGETS pugixml)
-    if(TARGET pugixml_mt)
-        openvino_developer_export_targets(COMPONENT openvino_common TARGETS pugixml_mt)
-        set_target_properties(pugixml_mt PROPERTIES FOLDER thirdparty)
-    endif()
-endif()
-
 if(ENABLE_MKL_DNN)
     set(DNNL_ENABLE_CONCURRENT_EXEC ON CACHE BOOL "" FORCE)
     set(DNNL_ENABLE_PRIMITIVE_CACHE OFF CACHE BOOL "" FORCE) ## TODO: try it later
