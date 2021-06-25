@@ -32,7 +32,7 @@ target_link_libraries(${TARGET_NAME} PRIVATE clDNN_lib pugixml::static
                                              inference_engine_lp_transformations
                                              ${NGRAPH_LIBRARIES})
 
-set(CLDNN_TOP_FOLDER "${IE_MAIN_SOURCE_DIR}/thirdparty/clDNN")
+set(CLDNN_TOP_FOLDER "${OpenVINO_SOURCE_DIR}/thirdparty/clDNN")
 target_include_directories(${TARGET_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
         $<TARGET_PROPERTY:inference_engine_transformations,INTERFACE_INCLUDE_DIRECTORIES>

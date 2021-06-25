@@ -114,6 +114,22 @@ if(NGRAPH_UNIT_TEST_ENABLE OR ENABLE_TESTS)
 endif()
 
 #
+# ClDNN
+#
+
+if(ENABLE_CLDNN)
+    if(ENABLE_TESTS AND ENABLE_CLDNN_TESTS)
+        set(CLDNN__INCLUDE_TESTS ON CACHE BOOL "" FORCE)
+    else()
+        set(CLDNN__INCLUDE_TESTS OFF CACHE BOOL "" FORCE)
+    endif()
+    set(CLDNN_THREADING "${THREADING}" CACHE STRING "" FORCE)
+    set(GPU_DEBUG_CONFIG OFF CACHE BOOL "Enable debug config feature" FORCE)
+
+    add_subdirectory(clDNN)
+endif()
+
+#
 # Install
 #
 
