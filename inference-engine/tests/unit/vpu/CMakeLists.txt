@@ -13,7 +13,7 @@ addIeTargetTest(
             # because ngraphFunctions sources need to be compiled with LTO as well
             "${IE_TESTS_ROOT}/ngraph_helpers/ngraph_functions/src"
         INCLUDES
-            "${IE_MAIN_SOURCE_DIR}/src/vpu/myriad_plugin"
+            "${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin"
             "${OpenVINO_SOURCE_DIR}/thirdparty/movidius"
             "${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include/watchdog"
             "${XLINK_INCLUDE}"

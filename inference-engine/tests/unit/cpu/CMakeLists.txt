@@ -8,8 +8,8 @@ addIeTargetTest(
         NAME ${TARGET_NAME}
         ROOT ${CMAKE_CURRENT_SOURCE_DIR}
         INCLUDES
-            ${IE_MAIN_SOURCE_DIR}/src/mkldnn_plugin
-            ${IE_MAIN_SOURCE_DIR}/src/transformations/include
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin
+            ${OpenVINO_SOURCE_DIR}/runtime/core/transformations/include
         OBJECT_FILES
             $<TARGET_OBJECTS:MKLDNNPlugin_obj>
         LINK_LIBRARIES

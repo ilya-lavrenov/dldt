@@ -3,17 +3,21 @@
 #
 
 set(TARGET_NAME inference_engine_reader_api)
+set(READERS_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
 
 # Reader API interface library
 add_library(${TARGET_NAME} INTERFACE)
 
 target_include_directories(${TARGET_NAME} INTERFACE
-    "${CMAKE_CURRENT_SOURCE_DIR}/reader_api"
+    "${READERS_ROOT_DIR}/reader_api"
     $<TARGET_PROPERTY:inference_engine,INTERFACE_INCLUDE_DIRECTORIES>)
 
-file(GLOB_RECURSE reader_api_hpp "${CMAKE_CURRENT_SOURCE_DIR}/reader_api/*.hpp")
+# Code style
 
+file(GLOB_RECURSE reader_api_hpp "${READERS_ROOT_DIR}/reader_api/*.hpp")
 add_cpplint_target(${TARGET_NAME}_cpplint FOR_SOURCES ${reader_api_hpp})
+
+# Readers
 
 add_subdirectory(ir_reader)
 add_subdirectory(ir_reader_v7)

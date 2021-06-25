@@ -20,7 +20,7 @@ file (GLOB LIBRARY_SRC
       )
 
 # TODO: WA for OneHot pass usage in reshape
-set(LEGACY_SRC_ROOT "${IE_MAIN_SOURCE_DIR}/src/legacy_api/src/")
+set(LEGACY_SRC_ROOT "${OpenVINO_SOURCE_DIR}/runtime/core/legacy_api/src/")
 set(LEGACY_LIBRARY_SHARED_SRCS
     "${LEGACY_SRC_ROOT}/transformations/convert_opset1_to_legacy/convert_one_hot_to_one_hot_ie.cpp"
     "${LEGACY_SRC_ROOT}/transformations/convert_opset1_to_legacy/convert_nms_5_to_legacy.cpp"
@@ -77,7 +77,9 @@ endif()
 
 addVersionDefines(ie_version.cpp CI_BUILD_NUMBER)
 
-set (PUBLIC_HEADERS_DIR "${IE_MAIN_SOURCE_DIR}/include")
+set(PUBLIC_HEADERS_DIR "${IE_MAIN_SOURCE_DIR}/include")
+set(PLUGIN_API_HEADERS_DIR "${OpenVINO_SOURCE_DIR}/runtime/core/plugin_api")
+set(READER_API_HEADERS_DIR "${OpenVINO_SOURCE_DIR}/runtime/core/reader_api")
 
 file (GLOB_RECURSE PUBLIC_HEADERS
        ${PUBLIC_HEADERS_DIR}/*.hpp
@@ -95,7 +97,7 @@ source_group("include" FILES ${LIBRARY_HEADERS} ${PUBLIC_HEADERS})
 add_library(${TARGET_NAME}_plugin_api INTERFACE)
 
 target_include_directories(${TARGET_NAME}_plugin_api INTERFACE
-    "${IE_MAIN_SOURCE_DIR}/src/plugin_api"
+    "${PLUGIN_API_HEADERS_DIR}"
     $<TARGET_PROPERTY:${TARGET_NAME}_preproc,INTERFACE_INCLUDE_DIRECTORIES>
     ${PUBLIC_HEADERS_DIR})
 
@@ -103,8 +105,8 @@ target_link_libraries(${TARGET_NAME}_plugin_api INTERFACE pugixml::static openvi
 
 set_ie_threading_interface_for(${TARGET_NAME}_plugin_api)
 
-file(GLOB_RECURSE plugin_api_src "${IE_MAIN_SOURCE_DIR}/src/plugin_api/*.hpp"
-                                 "${IE_MAIN_SOURCE_DIR}/src/plugin_api/*.h")
+file(GLOB_RECURSE plugin_api_src "${PLUGIN_API_HEADERS_DIR}/*.hpp"
+                                 "${PLUGIN_API_HEADERS_DIR}/*.h")
 
 add_cpplint_target(${TARGET_NAME}_plugin_api_cpplint FOR_SOURCES ${plugin_api_src})
 
@@ -127,7 +129,7 @@ target_include_directories(${TARGET_NAME}_obj SYSTEM PRIVATE $<TARGET_PROPERTY:n
                                                              $<TARGET_PROPERTY:xbyak,INTERFACE_INCLUDE_DIRECTORIES>)
 
 target_include_directories(${TARGET_NAME}_obj PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
-                                                      "${IE_MAIN_SOURCE_DIR}/src/readers/ir_reader" # for ie_ir_version.hpp
+                                                      "${OpenVINO_SOURCE_DIR}/runtime/core/ir_reader" # for ie_ir_version.hpp
                                                       $<TARGET_PROPERTY:${TARGET_NAME}_legacy,INTERFACE_INCLUDE_DIRECTORIES>
                                                       $<TARGET_PROPERTY:${TARGET_NAME}_transformations,INTERFACE_INCLUDE_DIRECTORIES>
                                                       $<TARGET_PROPERTY:${TARGET_NAME}_plugin_api,INTERFACE_INCLUDE_DIRECTORIES>)
@@ -194,7 +196,7 @@ endif()
 
 target_include_directories(${TARGET_NAME}_s PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"
     $<TARGET_PROPERTY:inference_engine_plugin_api,INTERFACE_INCLUDE_DIRECTORIES>
-    "${IE_MAIN_SOURCE_DIR}/src/legacy_api/src")
+    "${OpenVINO_SOURCE_DIR}/runtime/core/legacy_api/src")
 
 if(WIN32)
     set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME}_s)
@@ -261,7 +263,7 @@ endif()
 ie_cpack_add_component(core REQUIRED DEPENDS ${core_components})
 ie_cpack_add_component(core_dev REQUIRED core ngraph_dev)
 
-install(DIRECTORY "${IE_MAIN_SOURCE_DIR}/include" DESTINATION ${IE_CPACK_IE_DIR}
+install(DIRECTORY "${PUBLIC_HEADERS_DIR}" DESTINATION ${IE_CPACK_IE_DIR}
         COMPONENT core_dev)
 
 install(TARGETS ${TARGET_NAME} EXPORT InferenceEngineTargets
