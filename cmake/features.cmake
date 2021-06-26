@@ -116,6 +116,23 @@ ie_option (ENABLE_SYSTEM_PUGIXML "use the system copy of pugixml" OFF)
 
 ie_option (ENABLE_CPU_DEBUG_CAPS "enable CPU debug capabilities at runtime" OFF)
 
+ie_option (NGRAPH_UNIT_TEST_ENABLE "Control the building of unit tests" ON)
+ie_option (NGRAPH_UNIT_TEST_BACKENDS_ENABLE "Control the building of unit tests using backends" ON)
+ie_option (NGRAPH_INTERPRETER_ENABLE "Control the building of the INTERPRETER backend" ON)
+ie_option (NGRAPH_DEBUG_ENABLE "Enable output for NGRAPH_DEBUG statements" OFF)
+ie_option (NGRAPH_ONNX_IMPORT_ENABLE "Enable ONNX importer" OFF)
+ie_option (NGRAPH_ONNX_EDITOR_ENABLE "Enable ONNX Editor" OFF)
+ie_option (NGRAPH_PDPD_FRONTEND_ENABLE "Enable PaddlePaddle FrontEnd" OFF)
+ie_option (NGRAPH_PYTHON_BUILD_ENABLE "Enable build nGraph python package wheel" OFF)
+ie_option (NGRAPH_USE_PROTOBUF_LITE "Compiles and links with protobuf-lite" OFF)
+
+if (NGRAPH_ONNX_IMPORT_ENABLE OR NGRAPH_PDPD_FRONTEND_ENABLE)
+    ie_option (NGRAPH_USE_SYSTEM_PROTOBUF "Use system provided Protobuf shared object" OFF)
+endif()
+if(NGRAPH_ONNX_EDITOR_ENABLE AND NOT NGRAPH_ONNX_IMPORT_ENABLE)
+    message(FATAL_ERROR "ONNX Editor component requires ONNX Importer. Set NGRAPH_ONNX_IMPORT_ENABLE=ON.")
+endif()
+
 #
 # Process featues
 #
