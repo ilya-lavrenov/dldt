@@ -106,34 +106,9 @@ set(NGRAPH_INSTALL_INCLUDE "deployment_tools/ngraph/${CMAKE_INSTALL_INCLUDEDIR}"
 set(NGRAPH_INSTALL_DOC "deployment_tools/ngraph/${CMAKE_INSTALL_DOCDIR}")
 set(NGRAPH_INSTALL_BIN "deployment_tools/ngraph/${CMAKE_INSTALL_BINDIR}")
 
-#-----------------------------------------------------------------------------------------------
-# Compile Flags for nGraph...
-#-----------------------------------------------------------------------------------------------
-
-if (WIN32)
-    string(REPLACE "/W3" "/W0" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
-endif()
-
-if (NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Werror")
-endif()
-
-if(WIN32)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNOMINMAX")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_CRT_SECURE_NO_WARNINGS")
-endif()
-
 if (NGRAPH_DYNAMIC_COMPONENTS_ENABLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNGRAPH_DYNAMIC_COMPONENTS_ENABLE")
 endif()
-
-#-----------------------------------------------------------------------------------------------
-# Print Global Options
-#-----------------------------------------------------------------------------------------------
-message(STATUS "Compile Flags: ${CMAKE_CXX_FLAGS}")
-message(STATUS "Shared Link Flags: ${CMAKE_SHARED_LINKER_FLAGS}")
-message(STATUS "CMAKE_CXX_FLAGS_RELEASE ${CMAKE_CXX_FLAGS_RELEASE}")
-message(STATUS "CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG}")
 
 #-----------------------------------------------------------------------------------------------
 # External projects install directory
@@ -144,77 +119,6 @@ message(STATUS "CMAKE_CXX_FLAGS_DEBUG ${CMAKE_CXX_FLAGS_DEBUG}")
 if(NOT DEFINED EXTERNAL_PROJECTS_ROOT)
     set(EXTERNAL_PROJECTS_ROOT ${CMAKE_CURRENT_BINARY_DIR})
 endif()
-
-#
-# Export targets
-#
-
-set(NGRAPH_TARGETS_FILE "${CMAKE_CURRENT_BINARY_DIR}/ngraphTargets.cmake")
-
-if(BUILD_SHARED_LIBS)
-    install(EXPORT ngraphTargets
-        FILE ngraphTargets.cmake
-        NAMESPACE ngraph::
-        DESTINATION "deployment_tools/ngraph/cmake"
-        COMPONENT ngraph_dev)
-endif()
-
-configure_package_config_file(${OpenVINO_MAIN_SOURCE_DIR}/cmake/templates/ngraphConfig.cmake.in
-    ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfig.cmake
-    INSTALL_DESTINATION cmake)
-
-write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/ngraphConfigVersion.cmake
-    VERSION ${IE_VERSION_MAJOR}.${IE_VERSION_MINOR}.${IE_VERSION_PATCH}
-    COMPATIBILITY SameMajorVersion)
-
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfig.cmake
-    ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfigVersion.cmake
-    DESTINATION "deployment_tools/ngraph/cmake"
-    COMPONENT ngraph_dev)
-
-set(USE_STATIC_PROTOBUF OFF)
-if (NGRAPH_PDPD_FRONTEND_ENABLE) # add more frontends here which depend on static protobuf
-    set(USE_STATIC_PROTOBUF ON)
-endif()
-
-if (NGRAPH_ONNX_IMPORT_ENABLE OR USE_STATIC_PROTOBUF)
-    if (MSVC)
-        # When we build dll libraries. These flags make sure onnx and protobuf build with /MD, not /MT.
-        # These two options can't be mixed, because they requires link two imcompatiable runtime.
-        set(protobuf_WITH_ZLIB  OFF CACHE BOOL "" FORCE)
-
-        if(NOT DEFINED ONNX_USE_MSVC_STATIC_RUNTIME)
-            set(ONNX_USE_MSVC_STATIC_RUNTIME OFF)
-        endif()
-        if(NOT DEFINED protobuf_MSVC_STATIC_RUNTIME)
-            set(protobuf_MSVC_STATIC_RUNTIME OFF CACHE BOOL "Link protobuf to static runtime libraries" FORCE)
-        endif()
-    endif()
-
-    set(BEFORE_ONNX_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
-    set(BUILD_SHARED_LIBS ON)
-    set(BUILD_STANDALONE_STATIC OFF)
-
-    if (NOT NGRAPH_USE_SYSTEM_PROTOBUF)
-        include(cmake/external_protobuf.cmake)
-    else()
-        find_package(Protobuf 2.6.1 REQUIRED)
-    endif()
-
-    if (NGRAPH_ONNX_IMPORT_ENABLE)
-        # target onnx_proto will be shared lib, onnx static
-        include(cmake/external_onnx.cmake)
-        if (TARGET ext_protobuf)
-            add_dependencies(onnx ext_protobuf)
-        endif()
-    endif()
-
-    set(BUILD_SHARED_LIBS ${BEFORE_ONNX_BUILD_SHARED_LIBS})
-    unset(BEFORE_ONNX_BUILD_SHARED_LIBS)
-    unset(BUILD_STANDALONE_STATIC)
-endif()
-
-add_subdirectory(frontend)
 
 add_subdirectory(test)
 

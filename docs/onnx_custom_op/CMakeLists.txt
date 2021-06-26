@@ -11,7 +11,7 @@ find_package(ngraph REQUIRED COMPONENTS onnx_importer)
 
 add_library(${TARGET_NAME} STATIC onnx_custom_op.cpp onnx_custom_op.hpp)
 
-target_link_libraries(${TARGET_NAME} PUBLIC ${NGRAPH_LIBRARIES} ${ONNX_IMPORTER_LIBRARIES})
+target_link_libraries(${TARGET_NAME} PUBLIC ngraph::ngraph ${ONNX_IMPORTER_LIBRARIES})
 # [cmake:onnx_custom_op]
 
 # Enable code style check

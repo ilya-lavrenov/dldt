@@ -67,7 +67,7 @@ if(ENABLE_SSE42)
     list(APPEND LIBRARY_SRC ${SSE_SRC})
 
     ie_sse42_optimization_flags(sse4_2_flags)
-    set_source_files_properties(${SSE_SRC} PROPERTIES COMPILE_FLAGS "${sse4_2_flags}")
+    set_source_files_properties(${SSE_SRC} PROPERTIES COMPILE_OPTIONS "${sse4_2_flags}")
     add_definitions(-DHAVE_SSE=1)
 
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.16")
@@ -162,7 +162,7 @@ if (TBBBIND_2_4_FOUND)
 endif()
 
 target_link_libraries(${TARGET_NAME} PRIVATE pugixml::static openvino::itt ${CMAKE_DL_LIBS} Threads::Threads
-                                             ${NGRAPH_LIBRARIES} inference_engine_transformations)
+                                             ngraph inference_engine_transformations)
 
 target_include_directories(${TARGET_NAME} INTERFACE
             $<BUILD_INTERFACE:${PUBLIC_HEADERS_DIR}>
@@ -202,7 +202,7 @@ if(WIN32)
     set_target_properties(${TARGET_NAME}_s PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME}_s)
 endif()
 
-target_link_libraries(${TARGET_NAME}_s PRIVATE openvino::itt ${CMAKE_DL_LIBS} ${NGRAPH_LIBRARIES}
+target_link_libraries(${TARGET_NAME}_s PRIVATE openvino::itt ${CMAKE_DL_LIBS} ngraph
                                                inference_engine_transformations pugixml::static)
 
 target_compile_definitions(${TARGET_NAME}_s PUBLIC USE_STATIC_IE)
@@ -217,7 +217,7 @@ set_target_properties(${TARGET_NAME} ${TARGET_NAME}_obj ${TARGET_NAME}_s
 # Export for build tree
 
 export(TARGETS ${TARGET_NAME} NAMESPACE IE::
-        APPEND FILE "${CMAKE_BINARY_DIR}/InferenceEngineTargets.cmake")
+       APPEND FILE "${CMAKE_BINARY_DIR}/InferenceEngineTargets.cmake")
 
 # Export for developer package
 

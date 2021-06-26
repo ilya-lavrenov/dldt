@@ -88,9 +88,6 @@ function(build_ngraph)
         set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
     endif()
 
-    ie_cpack_add_component(ngraph REQUIRED)
-    ie_cpack_add_component(ngraph_dev REQUIRED DEPENDS ngraph)
-
     add_subdirectory(ngraph)
     set(NGRAPH_LIBRARIES ngraph PARENT_SCOPE)
 endfunction()
@@ -128,9 +125,9 @@ function(openvino_developer_export_targets)
 endfunction()
 
 add_subdirectory(thirdparty)
-build_ngraph()
 add_subdirectory(runtime)
 add_subdirectory(inference-engine)
+build_ngraph()
 add_subdirectory(model-optimizer)
 add_subdirectory(tools)
 add_subdirectory(samples)
@@ -178,7 +175,7 @@ ie_generate_dev_package_config()
 function(register_extra_modules)
     # post export
     openvino_developer_export_targets(COMPONENT inference_engine TARGETS inference_engine)
-    openvino_developer_export_targets(COMPONENT ngraph TARGETS ${NGRAPH_LIBRARIES})
+    openvino_developer_export_targets(COMPONENT ngraph TARGETS ngraph)
 
     set(InferenceEngineDeveloperPackage_DIR "${CMAKE_CURRENT_BINARY_DIR}/build-modules")
 

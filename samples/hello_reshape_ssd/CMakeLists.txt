@@ -9,4 +9,4 @@ ie_add_sample(NAME hello_reshape_ssd
               OPENCV_DEPENDENCIES core imgproc imgcodecs)
 
 find_package(ngraph REQUIRED)
-target_link_libraries(hello_reshape_ssd PRIVATE ${NGRAPH_LIBRARIES})
+target_link_libraries(hello_reshape_ssd PRIVATE ngraph::ngraph)

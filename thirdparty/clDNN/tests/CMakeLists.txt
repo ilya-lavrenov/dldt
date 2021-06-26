@@ -111,4 +111,4 @@ endif()
 
 ie_sse42_optimization_flags(sse4_2_flags)
 set_source_files_properties(test_utils/float16.cpp
-  PROPERTIES COMPILE_FLAGS "${sse4_2_flags}")
+  PROPERTIES COMPILE_OPTIONS "${sse4_2_flags}")

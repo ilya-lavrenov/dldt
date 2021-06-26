@@ -81,8 +81,10 @@ endif()
 # Installation and export logic...
 #-----------------------------------------------------------------------------------------------
 
-set(NGRAPH_TARGETS_FILE "${CMAKE_CURRENT_BINARY_DIR}/ngraphTargets.cmake")
 export(TARGETS ngraph NAMESPACE ngraph:: FILE "${NGRAPH_TARGETS_FILE}")
+
+ie_cpack_add_component(ngraph REQUIRED)
+ie_cpack_add_component(ngraph_dev REQUIRED DEPENDS ngraph)
 
 # nGraph
 
@@ -101,4 +103,28 @@ install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/ngraph/version.hpp
         DESTINATION deployment_tools/ngraph/include/ngraph
+        COMPONENT ngraph_dev)
+
+
+#
+# Export targets
+#
+
+install(EXPORT ngraphTargets
+        FILE ngraphTargets.cmake
+        NAMESPACE ngraph::
+        DESTINATION "deployment_tools/ngraph/cmake"
+        COMPONENT ngraph_dev)
+
+configure_package_config_file(${OpenVINO_MAIN_SOURCE_DIR}/cmake/templates/ngraphConfig.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfig.cmake
+    INSTALL_DESTINATION cmake)
+
+write_basic_package_version_file(${CMAKE_CURRENT_BINARY_DIR}/ngraphConfigVersion.cmake
+    VERSION ${IE_VERSION_MAJOR}.${IE_VERSION_MINOR}.${IE_VERSION_PATCH}
+    COMPATIBILITY SameMajorVersion)
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfig.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfigVersion.cmake
+        DESTINATION "deployment_tools/ngraph/cmake"
         COMPONENT ngraph_dev)

@@ -25,8 +25,7 @@ if (OpenCV_FOUND)
 endif()
 
 target_compile_definitions(${TARGET_NAME} PRIVATE IMPLEMENT_INFERENCE_EXTENSION_API)
-target_link_libraries(${TARGET_NAME} PRIVATE IE::inference_engine
-                                             ${NGRAPH_LIBRARIES})
+target_link_libraries(${TARGET_NAME} PRIVATE IE::inference_engine ngraph::ngraph)
 
 if (ngraph_onnx_importer_FOUND)
     target_link_libraries(${TARGET_NAME} PRIVATE ${ONNX_IMPORTER_LIBRARIES})

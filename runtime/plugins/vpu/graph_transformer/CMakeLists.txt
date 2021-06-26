@@ -50,7 +50,7 @@ function(add_graph_transformer_target TARGET_NAME STATIC_IE)
 
     target_link_libraries(${TARGET_NAME}
         PUBLIC
-            ${NGRAPH_LIBRARIES}
+            ngraph
         PRIVATE
             openvino::itt
             mvnc # TODO: remove once all options are migrated
