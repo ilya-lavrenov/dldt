@@ -2,10 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-set(NGRAPH_INCLUDE_PATH
-    ${CMAKE_CURRENT_SOURCE_DIR}/core/include
-)
-
 set(FRONTEND_INCLUDE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/frontend/frontend_manager/include
 )
@@ -131,8 +127,6 @@ if (NGRAPH_DYNAMIC_COMPONENTS_ENABLE)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DNGRAPH_DYNAMIC_COMPONENTS_ENABLE")
 endif()
 
-add_definitions(-DPROJECT_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
-
 #-----------------------------------------------------------------------------------------------
 # Print Global Options
 #-----------------------------------------------------------------------------------------------
@@ -151,14 +145,11 @@ if(NOT DEFINED EXTERNAL_PROJECTS_ROOT)
     set(EXTERNAL_PROJECTS_ROOT ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
-add_subdirectory(core)
-
 #
 # Export targets
 #
 
 set(NGRAPH_TARGETS_FILE "${CMAKE_CURRENT_BINARY_DIR}/ngraphTargets.cmake")
-export(TARGETS ngraph NAMESPACE ngraph:: FILE "${NGRAPH_TARGETS_FILE}")
 
 if(BUILD_SHARED_LIBS)
     install(EXPORT ngraphTargets
@@ -227,6 +218,6 @@ add_subdirectory(frontend)
 
 add_subdirectory(test)
 
-if (NGRAPH_PYTHON_BUILD_ENABLE)
+if(NGRAPH_PYTHON_BUILD_ENABLE)
     add_subdirectory(python)
 endif()

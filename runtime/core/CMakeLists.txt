@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+add_subdirectory(ngraph)
 add_subdirectory(preprocessing)
 add_subdirectory(readers)
 add_subdirectory(legacy_api)

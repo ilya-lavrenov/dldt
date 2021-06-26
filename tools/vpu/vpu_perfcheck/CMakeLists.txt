@@ -16,9 +16,9 @@ function(add_perfcheck_target TARGET_NAME PLUGIN_NAME)
 
     target_include_directories(${TARGET_NAME}
         SYSTEM PRIVATE
-            "${IE_MAIN_SOURCE_DIR}/src/vpu/graph_transformer/include"
-            "${IE_MAIN_SOURCE_DIR}/src/plugin_api"
-            "${IE_MAIN_SOURCE_DIR}/samples/common/format_reader")
+            "${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/graph_transformer/include"
+            "${OpenVINO_SOURCE_DIR}/runtime/core/plugin_api"
+            "${OpenVINO_SOURCE_DIR}/samples/common/format_reader")
 
     target_link_libraries(${TARGET_NAME}
         PRIVATE

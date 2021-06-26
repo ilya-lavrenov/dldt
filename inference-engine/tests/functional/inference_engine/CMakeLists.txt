@@ -4,7 +4,7 @@
 
 set(TARGET_NAME ieFuncTests)
 
-set(INCLUDES ${OpenVINO_SOURCE_DIR}/runtime/core/inference_engine)
+set(INCLUDES ${OpenVINO_SOURCE_DIR}/runtime/core/inference_engine/src)
 
 set(LINK_LIBRARIES
     gmock

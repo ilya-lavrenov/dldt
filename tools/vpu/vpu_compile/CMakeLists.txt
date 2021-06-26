@@ -5,7 +5,7 @@
 set(TARGET_NAME myriad_compile)
 
 file(GLOB SRCS
-    ${IE_MAIN_SOURCE_DIR}/tools/vpu/common/*.cpp
+    ${OpenVINO_SOURCE_DIR}/tools/vpu/common/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
 )
 
@@ -18,8 +18,8 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 endif()
 
 target_include_directories(${TARGET_NAME} SYSTEM PRIVATE
-    ${IE_MAIN_SOURCE_DIR}/tools/vpu/common
-    ${IE_MAIN_SOURCE_DIR}/samples/common
+    ${OpenVINO_SOURCE_DIR}/tools/vpu/common
+    ${OpenVINO_SOURCE_DIR}/samples/common
 )
 
 target_link_libraries(${TARGET_NAME} PRIVATE

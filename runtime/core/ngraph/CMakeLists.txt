@@ -2,6 +2,12 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+add_definitions(-DPROJECT_ROOT_DIR="${CMAKE_CURRENT_SOURCE_DIR}")
+
+set(NGRAPH_INCLUDE_PATH
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
+
 add_definitions(-DIN_NGRAPH_LIBRARY)
 
 file(GLOB_RECURSE LIBRARY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
@@ -22,22 +28,14 @@ configure_file(include/ngraph/version.in.hpp include/ngraph/version.hpp)
 # Create static or shared library depending on BUILD_SHARED_LIBS
 add_library(ngraph ${LIBRARY_SRC} ${PUBLIC_HEADERS})
 
+ie_faster_build(ngraph
+    UNITY
+    PCH PRIVATE "src/precomp.hpp")
 
-if(COMMAND ie_faster_build)
-    ie_faster_build(ngraph
-        UNITY
-        PCH PRIVATE "src/precomp.hpp"
-    )
-endif()
+ie_add_api_validator_post_build_step(TARGET ngraph)
 
-if(COMMAND ie_add_api_validator_post_build_step)
-    ie_add_api_validator_post_build_step(TARGET ngraph)
-endif()
-
-if(COMMAND ie_add_vs_version_file)
-    ie_add_vs_version_file(NAME ngraph
-                           FILEDESCRIPTION "nGraph library")
-endif()
+ie_add_vs_version_file(NAME ngraph
+                       FILEDESCRIPTION "nGraph library")
 
 target_link_libraries(ngraph PRIVATE ngraph::builder ngraph::reference)
 
@@ -80,22 +78,27 @@ if (NOT WIN32)
 endif()
 
 #-----------------------------------------------------------------------------------------------
-# Installation logic...
+# Installation and export logic...
 #-----------------------------------------------------------------------------------------------
 
+set(NGRAPH_TARGETS_FILE "${CMAKE_CURRENT_BINARY_DIR}/ngraphTargets.cmake")
+export(TARGETS ngraph NAMESPACE ngraph:: FILE "${NGRAPH_TARGETS_FILE}")
+
 # nGraph
+
 install(TARGETS ngraph EXPORT ngraphTargets
-        RUNTIME DESTINATION ${NGRAPH_INSTALL_LIB} COMPONENT ngraph
-        ARCHIVE DESTINATION ${NGRAPH_INSTALL_LIB} COMPONENT ngraph
-        LIBRARY DESTINATION ${NGRAPH_INSTALL_LIB} COMPONENT ngraph)
+        RUNTIME DESTINATION deployment_tools/ngraph/lib COMPONENT ngraph
+        ARCHIVE DESTINATION deployment_tools/ngraph/lib COMPONENT ngraph
+        LIBRARY DESTINATION deployment_tools/ngraph/lib COMPONENT ngraph)
+
 install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include/
-    DESTINATION ${NGRAPH_INSTALL_INCLUDE}
-    COMPONENT ngraph_dev
-    FILES_MATCHING
-        PATTERN "*.hpp"
-        PATTERN "*.h"
-        PATTERN "*version.in.hpp" EXCLUDE
-)
+        DESTINATION deployment_tools/ngraph/include
+        COMPONENT ngraph_dev
+        FILES_MATCHING
+            PATTERN "*.hpp"
+            PATTERN "*.h"
+            PATTERN "*version.in.hpp" EXCLUDE)
+
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/include/ngraph/version.hpp
-    DESTINATION ${NGRAPH_INSTALL_INCLUDE}/ngraph
-    COMPONENT ngraph_dev)
+        DESTINATION deployment_tools/ngraph/include/ngraph
+        COMPONENT ngraph_dev)

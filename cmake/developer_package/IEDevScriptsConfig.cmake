@@ -227,6 +227,7 @@ include(vs_version/vs_version)
 include(plugins/plugins)
 include(add_ie_target)
 include(CMakePackageConfigHelpers)
+include(CTest)
 
 if(ENABLE_FUZZING)
     enable_fuzzing()

@@ -60,7 +60,7 @@ addIeTargetTest(
         ${CMAKE_CURRENT_SOURCE_DIR}/graph_transformer
     INCLUDES
         ${IE_MAIN_SOURCE_DIR}/include/vpu
-        ${IE_MAIN_SOURCE_DIR}/src/vpu/graph_transformer/include
+        ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/graph_transformer/include
         ${CMAKE_CURRENT_BINARY_DIR}
     LINK_LIBRARIES
         IESharedTests

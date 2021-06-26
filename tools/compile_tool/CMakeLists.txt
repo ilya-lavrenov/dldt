@@ -11,10 +11,9 @@ file(GLOB SRCS
 add_executable(${TARGET_NAME} ${SRCS})
 
 target_include_directories(${TARGET_NAME} SYSTEM PRIVATE
-    ${IE_MAIN_SOURCE_DIR}/include
-    ${IE_MAIN_SOURCE_DIR}/src/vpu/graph_transformer/include
-    ${IE_MAIN_SOURCE_DIR}/src/vpu/common/include
-    ${IE_MAIN_SOURCE_DIR}/src/plugin_api
+    ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/graph_transformer/include
+    ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/common/include
+    ${OpenVINO_SOURCE_DIR}/runtime/core/plugin_api
 )
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")

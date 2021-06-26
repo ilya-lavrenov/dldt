@@ -55,7 +55,7 @@ function(enable_vpu TARGET_NAME FLAG_NAME PLUGIN_NAME)
         target_compile_definitions(${TARGET_NAME} PRIVATE __PC__)
 
         target_include_directories(${TARGET_NAME} PRIVATE
-                ${IE_MAIN_SOURCE_DIR}/src/vpu/common/include
+                ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/common/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/myriad_tests
                 ${OpenVINO_SOURCE_DIR}/thirdparty/movidius
                 ${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include

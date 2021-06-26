@@ -20,11 +20,11 @@ function(add_helpers target_name)
     add_library(${target_name} STATIC ${HELPERS_SRC})
 
     target_include_directories(${target_name} PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}"
-                                                     "${IE_MAIN_SOURCE_DIR}/src/inference_engine"
+                                                     "${OpenVINO_SOURCE_DIR}/runtime/core/inference_engine/src"
                                                      $<TARGET_PROPERTY:pugixml::static,INTERFACE_INCLUDE_DIRECTORIES>
-                                                     "${IE_MAIN_SOURCE_DIR}/src/vpu/"
-                                                     "${IE_MAIN_SOURCE_DIR}/src/plugin_api"
-                                                     "${IE_MAIN_SOURCE_DIR}/src/legacy_api/include"
+                                                     "${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/"
+                                                     "${OpenVINO_SOURCE_DIR}/runtime/core/plugin_api"
+                                                     "${OpenVINO_SOURCE_DIR}/runtime/core/legacy_api/include"
                                              PRIVATE "${CMAKE_CURRENT_BINARY_DIR}")
 
     # TODO: eliminate dependency on samples

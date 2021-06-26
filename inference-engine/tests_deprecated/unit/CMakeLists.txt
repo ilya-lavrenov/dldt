@@ -62,12 +62,12 @@ if (ENABLE_MYRIAD)
             engines/vpu/myriad_tests/*cpp
             engines/vpu/myriad_tests/helpers/*cpp
             engines/vpu/myriad_tests/helpers/*h
-            ${IE_MAIN_SOURCE_DIR}/src/vpu/myriad_plugin/*.cpp
-            ${IE_MAIN_SOURCE_DIR}/src/vpu/myriad_plugin/configuration/*.cpp
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin/*.cpp
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin/configuration/*.cpp
             )
     include_directories(
             engines/vpu/myriad_tests/helpers
-            ${IE_MAIN_SOURCE_DIR}/src/vpu/myriad_plugin
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin
             ${OpenVINO_SOURCE_DIR}/thirdparty/movidius
             ${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include/watchdog
             ${XLINK_INCLUDE}
@@ -86,7 +86,7 @@ source_group("include" FILES ${TEST_INCLUDE})
 add_executable(${TARGET_NAME} ${TEST_SRC} ${TEST_INCLUDE})
 
 target_include_directories(${TARGET_NAME} PRIVATE
-        ${IE_MAIN_SOURCE_DIR}/src/gna_plugin
+        ${OpenVINO_SOURCE_DIR}/runtime/plugins/gna_plugin
         ${CMAKE_CURRENT_SOURCE_DIR})
 
 set_target_properties(${TARGET_NAME} PROPERTIES COMPILE_PDB_NAME ${TARGET_NAME})
