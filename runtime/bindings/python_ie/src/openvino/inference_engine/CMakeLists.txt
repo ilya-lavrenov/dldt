@@ -56,6 +56,8 @@ target_link_libraries(${TARGET_NAME} PRIVATE ${InferenceEngine_LIBRARIES})
 # Compatibility with python 2.7 which has deprecated "register" specifier
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
     target_compile_options(${TARGET_NAME} PRIVATE "-Wno-error=register")
+elseif(CMAKE_COMPILER_IS_GNUCXX)
+    target_compile_options(${TARGET_NAME} PRIVATE "-Wno-error=unused-function;-Wno-error=sign-compare")
 endif()
 
 # perform copy

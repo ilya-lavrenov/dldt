@@ -43,9 +43,9 @@ const char* plugins_xml = plugins_xml_std.c_str();
 #define IE_ASSERT_OK(...) ASSERT_EQ(IEStatusCode::OK, __VA_ARGS__)
 #define IE_EXPECT_NOT_OK(...) EXPECT_NE(IEStatusCode::OK, __VA_ARGS__)
 
-size_t read_image_from_file(const char* img_path, unsigned char *img_data, size_t size) {
+long int read_image_from_file(const char* img_path, unsigned char *img_data, long int size) {
     FILE *fp = fopen(img_path, "rb+");
-    size_t read_size = 0;
+    long int read_size = 0;
 
     if (fp) {
         fseek(fp, 0, SEEK_END);

@@ -29,6 +29,3 @@ set(NGRAPH_INSTALL_INCLUDE "deployment_tools/ngraph/${CMAKE_INSTALL_INCLUDEDIR}"
 
 add_subdirectory(test)
 
-if(NGRAPH_PYTHON_BUILD_ENABLE)
-    add_subdirectory(python)
-endif()
