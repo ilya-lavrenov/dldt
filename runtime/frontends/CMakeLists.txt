@@ -22,6 +22,8 @@ if(NOT WIN32)
             OUTPUT
             ${PROTOBUF_STATIC_LIB_OUTPUT}
             COMMAND ${CMAKE_COMMAND} ${CMAKE_CURRENT_SOURCE_DIR}/cmake_static_protobuf
+                    -DOpenVINO_SOURCE_DIR=${OpenVINO_SOURCE_DIR}
+                    -DCMAKE_POLICY_DEFAULT_CMP0063=NEW # Honor visibility properties for all target types
                     -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
                     -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
                     -DCMAKE_COMPILE_PDB_OUTPUT_DIRECTORY=${CMAKE_COMPILE_PDB_OUTPUT_DIRECTORY}
@@ -33,7 +35,7 @@ if(NOT WIN32)
                     -DNGRAPH_INSTALL_LIB=${NGRAPH_INSTALL_LIB}
                     -DSYSTEM_PROTOC=${SYSTEM_PROTOC}
                      ${NGRAPH_FORWARD_CMAKE_ARGS}
-            COMMAND ${CMAKE_COMMAND} --build . --target libprotobuf
+            COMMAND ${CMAKE_COMMAND} --build . --target libprotobuf -j8
             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/libprotobuf_static
             COMMENT "Build Protobuf Static Library"
     )
