@@ -71,19 +71,6 @@ function(build_ngraph)
         ngraph_set(NGRAPH_PYTHON_BUILD_ENABLE OFF)
     endif()
 
-    if(CMAKE_CXX_COMPILER_ID MATCHES "^(Apple)?Clang$")
-        ie_add_compiler_flags(-Wno-error=uninitialized -Wno-error=literal-conversion)
-    elseif(UNIX)
-        ie_add_compiler_flags(-Wno-error=maybe-uninitialized -Wno-error=return-type)
-    endif()
-
-    # WA for GCC 7.0
-    if (UNIX)
-        ie_add_compiler_flags(-Wno-error=return-type -Wno-undef)
-    elseif(WIN32)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /wd4308 /wd4146 /wd4703 /wd4244 /wd4819")
-    endif()
-
     if(ENABLE_LTO)
         set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
     endif()
@@ -128,7 +115,6 @@ add_subdirectory(thirdparty)
 add_subdirectory(runtime)
 add_subdirectory(inference-engine)
 build_ngraph()
-add_subdirectory(model-optimizer)
 add_subdirectory(tools)
 add_subdirectory(samples)
 
