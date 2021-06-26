@@ -23,6 +23,7 @@ if(NOT WIN32)
             ${PROTOBUF_STATIC_LIB_OUTPUT}
             COMMAND ${CMAKE_COMMAND} ${CMAKE_CURRENT_SOURCE_DIR}/cmake_static_protobuf
                     -DOpenVINO_SOURCE_DIR=${OpenVINO_SOURCE_DIR}
+                    -DCMAKE_POSITION_INDEPENDENT_CODE=ON # relocation R_X86_64_TPOFF32
                     -DCMAKE_POLICY_DEFAULT_CMP0063=NEW # Honor visibility properties for all target types
                     -DCMAKE_LIBRARY_OUTPUT_DIRECTORY=${CMAKE_LIBRARY_OUTPUT_DIRECTORY}
                     -DCMAKE_ARCHIVE_OUTPUT_DIRECTORY=${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}
