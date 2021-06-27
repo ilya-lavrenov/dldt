@@ -73,6 +73,7 @@ target_include_directories(${TARGET_NAME}
             $<BUILD_INTERFACE:${${TARGET_NAME}_INCLUDE_DIR}>
             $<INSTALL_INTERFACE:${FRONTEND_INSTALL_INCLUDE}>
         PRIVATE
+            ${Protobuf_INCLUDE_DIRS}
             ${CMAKE_CURRENT_SOURCE_DIR}/src
             ${CMAKE_CURRENT_BINARY_DIR})
 
