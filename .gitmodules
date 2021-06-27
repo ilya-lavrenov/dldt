@@ -10,10 +10,6 @@
 	path = thirdparty/pugixml
 	url = https://github.com/zeux/pugixml.git
 	ignore = dirty
-[submodule "thirdparty/ade"]
-	path = thirdparty/ade
-	url = https://github.com/opencv/ade.git
-	ignore = dirty
 [submodule "thirdparty/gflags"]
 	path = thirdparty/gflags
 	url = https://github.com/gflags/gflags.git
@@ -22,18 +18,18 @@
 	path = thirdparty/gtest
 	url = https://github.com/openvinotoolkit/googletest.git
 	ignore = dirty
-[submodule "thirdparty/ocl/icd_loader"]
-	path = thirdparty/ocl/icd_loader
+[submodule "runtime/plugins/cldnn_engine/3rdparty/icd_loader"]
+	path = runtime/plugins/cldnn_engine/3rdparty/icd_loader
 	url = https://github.com/KhronosGroup/OpenCL-ICD-Loader.git
-	ignore = dirty
-[submodule "thirdparty/ocl/cl_headers"]
-	path = thirdparty/ocl/cl_headers
+[submodule "runtime/plugins/cldnn_engine/3rdparty/cl_headers"]
+	path = runtime/plugins/cldnn_engine/3rdparty/cl_headers
 	url = https://github.com/KhronosGroup/OpenCL-Headers.git
-	ignore = dirty
-[submodule "thirdparty/ocl/clhpp_headers"]
-	path = thirdparty/ocl/clhpp_headers
+[submodule "runtime/plugins/cldnn_engine/3rdparty/clhpp_headers"]
+	path = runtime/plugins/cldnn_engine/3rdparty/clhpp_headers
 	url = https://github.com/KhronosGroup/OpenCL-CLHPP.git
-	ignore = dirty
-[submodule "thirdparty/onednn-cpu"]
-	path = thirdparty/onednn-cpu
-	uirl = https://github.com/openvinotoolkit/oneDNN.git
+[submodule "runtime/core/preprocessing/3rdparty/ade"]
+	path = runtime/core/preprocessing/3rdparty/ade
+	url = https://github.com/opencv/ade.git
+[submodule "runtime/plugins/mkldnn_plugin/3rdparty/oneDNN"]
+	path = runtime/plugins/mkldnn_plugin/3rdparty/oneDNN
+	url = https://github.com/openvinotoolkit/oneDNN.git

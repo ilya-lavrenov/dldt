@@ -8,10 +8,6 @@ if (ENABLE_MKL_DNN)
     add_subdirectory(cpu)
 endif()
 
-if (ENABLE_CLDNN)
-    add_subdirectory(gpu)
-endif()
-
 if (ENABLE_GNA)
     add_subdirectory(gna)
 endif()

@@ -10,7 +10,6 @@ add_subdirectory(ittapi EXCLUDE_FROM_ALL)
 add_subdirectory(itt_collector EXCLUDE_FROM_ALL)
 add_subdirectory(zlib EXCLUDE_FROM_ALL)
 add_subdirectory(cnpy EXCLUDE_FROM_ALL)
-add_subdirectory(ocl EXCLUDE_FROM_ALL)
 
 add_subdirectory(xbyak EXCLUDE_FROM_ALL)
 openvino_developer_export_targets(COMPONENT openvino_common TARGETS xbyak)
@@ -33,18 +32,6 @@ else()
 
     ie_build_pugixml()
 endif()
-
-#
-# Fluid, G-API, OpenCV HAL
-#
-
-add_library(ocv_hal INTERFACE)
-target_include_directories(ocv_hal INTERFACE "${CMAKE_CURRENT_SOURCE_DIR}/ocv")
-
-add_subdirectory(ade EXCLUDE_FROM_ALL)
-add_subdirectory(fluid/modules/gapi EXCLUDE_FROM_ALL)
-set_target_properties(ade fluid PROPERTIES FOLDER thirdparty)
-openvino_developer_export_targets(COMPONENT openvino_common TARGETS ade fluid)
 
 #
 # Gflags
@@ -111,51 +98,6 @@ endfunction()
 
 if(ENABLE_TESTS)
     add_gtest_libraries()
-endif()
-
-#
-# ClDNN
-#
-
-if(ENABLE_CLDNN)
-    if(ENABLE_TESTS AND ENABLE_CLDNN_TESTS)
-        set(CLDNN__INCLUDE_TESTS ON CACHE BOOL "" FORCE)
-    else()
-        set(CLDNN__INCLUDE_TESTS OFF CACHE BOOL "" FORCE)
-    endif()
-    set(CLDNN_THREADING "${THREADING}" CACHE STRING "" FORCE)
-    set(GPU_DEBUG_CONFIG OFF CACHE BOOL "Enable debug config feature" FORCE)
-
-    add_subdirectory(clDNN)
-endif()
-
-#
-# OneDNN for Intel CPU plugin
-#
-
-if(ENABLE_MKL_DNN)
-    set(DNNL_ENABLE_CONCURRENT_EXEC ON CACHE BOOL "" FORCE)
-    set(DNNL_ENABLE_PRIMITIVE_CACHE OFF CACHE BOOL "" FORCE) ## TODO: try it later
-    set(DNNL_ENABLE_MAX_CPU_ISA OFF CACHE BOOL "" FORCE)     ## TODO: try it later
-    set(DNNL_LIBRARY_TYPE STATIC CACHE BOOL "" FORCE)
-    set(DNNL_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-    set(DNNL_BUILD_TESTS OFF CACHE BOOL "" FORCE)
-    set(DNNL_CPU_RUNTIME "${THREADING}" CACHE BOOL "" FORCE)
-    set(DNNL_BLAS_VENDOR "NONE" CACHE BOOL "" FORCE)
-    set(SDL_cmake_included ON)  ## to skip internal SDL flags. SDL flags are already set on IE level
-    if (ANDROID OR ((CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") AND NOT (THREADING STREQUAL "OMP")))
-        set(OpenMP_cmake_included ON) ## to skip "omp simd" inside a code. Lead to some crashes inside NDK LLVM..
-    endif()
-
-    add_subdirectory(onednn-cpu EXCLUDE_FROM_ALL)
-    add_library(mkldnn ALIAS dnnl)
-
-    if((CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") AND (MSVC_VERSION VERSION_GREATER_EQUAL "1910"))
-        # 1910 version of Visual Studio 2017
-        # This flagis needed for enabling SIMD vectorization with command '#pragma omp simd'.
-        # Compilation with '/openmp:experimental' key allow us to enable vectorizatikon capability in MSVC.
-        target_compile_options(mkldnn PRIVATE "/openmp:experimental")
-    endif()
 endif()
 
 #

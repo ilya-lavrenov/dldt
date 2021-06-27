@@ -2,8 +2,11 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-set(OPENCL_ICD_LOADER_HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cl_headers/" CACHE PATH "Path to OCL includes" FORCE)
+#
+# OpenCL
+#
 
+set(OPENCL_ICD_LOADER_HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cl_headers/" CACHE PATH "Path to OCL includes" FORCE)
 set(OPENCL_HEADERS_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cl_headers/" "${CMAKE_CURRENT_SOURCE_DIR}/clhpp_headers/include/" CACHE PATH "Path to OCL (CL and CLHPP) includes" FORCE)
 
 # Reset compilation options for ICD loader as default IE options lead to removing a lot of symbols from the library
@@ -22,3 +25,17 @@ target_include_directories(OpenCL SYSTEM PUBLIC ${OPENCL_HEADERS_DIR})
 set(OpenCL_VERSION_STRING "2.2" CACHE STRING "" FORCE)
 set(OpenCL_INCLUDE_DIR "${OPENCL_ICD_LOADER_HEADERS_DIR}" CACHE PATH "" FORCE)
 set(OPENCLROOT "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}" CACHE PATH "" FORCE)
+
+#
+# clDNN
+#
+
+if(ENABLE_TESTS AND ENABLE_CLDNN_TESTS)
+    set(CLDNN__INCLUDE_TESTS ON CACHE BOOL "" FORCE)
+else()
+    set(CLDNN__INCLUDE_TESTS OFF CACHE BOOL "" FORCE)
+endif()
+set(CLDNN_THREADING "${THREADING}" CACHE STRING "" FORCE)
+set(GPU_DEBUG_CONFIG OFF CACHE BOOL "Enable debug config feature" FORCE)
+
+add_subdirectory(clDNN)
