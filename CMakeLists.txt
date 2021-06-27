@@ -118,6 +118,10 @@ build_ngraph()
 add_subdirectory(tools)
 add_subdirectory(samples)
 
+if(ENABLE_TESTS)
+    add_subdirectory(tests/tests_deprecated)
+endif()
+
 #
 # Developer package
 #
