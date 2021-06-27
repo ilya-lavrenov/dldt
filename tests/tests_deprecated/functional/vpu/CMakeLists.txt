@@ -59,7 +59,6 @@ addIeTargetTest(
     ADDITIONAL_SOURCE_DIRS
         ${CMAKE_CURRENT_SOURCE_DIR}/graph_transformer
     INCLUDES
-        ${IE_MAIN_SOURCE_DIR}/include/vpu
         ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/graph_transformer/include
         ${CMAKE_CURRENT_BINARY_DIR}
     LINK_LIBRARIES

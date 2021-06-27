@@ -26,14 +26,14 @@ if (NGRAPH_ONNX_IMPORT_ENABLE OR USE_STATIC_PROTOBUF)
     set(BUILD_STANDALONE_STATIC OFF)
 
     if (NOT NGRAPH_USE_SYSTEM_PROTOBUF)
-        include(${OpenVINO_SOURCE_DIR}/ngraph/cmake/external_protobuf.cmake)
+        include(${OpenVINO_SOURCE_DIR}/thirdparty/cmake/external_protobuf.cmake)
     else()
         find_package(Protobuf 2.6.1 REQUIRED)
     endif()
 
     if (NGRAPH_ONNX_IMPORT_ENABLE)
         # target onnx_proto will be shared lib, onnx static
-        include(${OpenVINO_SOURCE_DIR}/ngraph/cmake/external_onnx.cmake)
+        include(${OpenVINO_SOURCE_DIR}/thirdparty/cmake/external_onnx.cmake)
         if (TARGET ext_protobuf)
             add_dependencies(onnx ext_protobuf)
         endif()

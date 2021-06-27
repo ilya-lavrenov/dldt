@@ -31,7 +31,7 @@ endfunction(resolve_archive_dependency)
 function(resolve_pull_request GITHUB_PULL_REQUEST TARGET_PATH)
     get_filename_component(FILE_NAME ${GITHUB_PULL_REQUEST} NAME)
     set (PATCH_URL "")
-    DownloadAndApply("${PATCH_URL}/${GITHUB_PULL_REQUEST}" "${IE_MAIN_SOURCE_DIR}/${TARGET_PATH}/${FILE_NAME}")
+    DownloadAndApply("${PATCH_URL}/${GITHUB_PULL_REQUEST}" "${OpenVINO_MAIN_SOURCE_DIR}/${TARGET_PATH}/${FILE_NAME}")
 endfunction(resolve_pull_request)
 
 function(extract_version_from_filename filename regex version)

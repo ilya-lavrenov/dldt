@@ -154,7 +154,7 @@ endif()
 add_library(vpu_custom_kernels INTERFACE)
 
 function(add_vpu_compile_custom_kernels)
-    set(SRC_DIR "${IE_MAIN_SOURCE_DIR}/src/vpu/custom_kernels")
+    set(SRC_DIR "${OpenVINO_MAIN_SOURCE_DIR}/runtime/plugins/vpu/custom_kernels")
     set(DST_DIR "${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/vpu_custom_kernels")
 
     file(MAKE_DIRECTORY "${DST_DIR}")

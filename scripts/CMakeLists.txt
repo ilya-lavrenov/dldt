@@ -6,15 +6,11 @@ ie_shellcheck_process(DIRECTORY "${OpenVINO_MAIN_SOURCE_DIR}"
                       SKIP "${OpenVINO_MAIN_SOURCE_DIR}/bin"
                            "${OpenVINO_MAIN_SOURCE_DIR}/build"
                            "${OpenVINO_MAIN_SOURCE_DIR}/thirdparty"
-                           "${IE_MAIN_SOURCE_DIR}/tests/ie_test_utils/common_test_utils/gtest"
-                           "${IE_MAIN_SOURCE_DIR}/samples/thirdparty"
-                           "${IE_MAIN_SOURCE_DIR}/thirdparty"
-                           "${IE_MAIN_SOURCE_DIR}/temp"
+                           "${OpenVINO_MAIN_SOURCE_DIR}/temp"
                            # TODO fix and enable back:
                            "${OpenVINO_MAIN_SOURCE_DIR}/scripts/dependencies.sh"
                            "${OpenVINO_MAIN_SOURCE_DIR}/scripts/install_dependencies/install_NEO_OCL_driver.sh"
                            "${OpenVINO_MAIN_SOURCE_DIR}/scripts/install_dependencies/install_openvino_dependencies.sh"
-                           "${OpenVINO_MAIN_SOURCE_DIR}/ngraph/python/tests/test_onnx/model_zoo_preprocess.sh"
                            )
 
 # install setupvars

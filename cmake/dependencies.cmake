@@ -5,7 +5,7 @@
 cmake_policy(SET CMP0054 NEW)
 
 # TODO: fix it
-set_temp_directory(TEMP "${IE_MAIN_SOURCE_DIR}")
+set_temp_directory(TEMP "${OpenVINO_MAIN_SOURCE_DIR}")
 
 if(CMAKE_CROSSCOMPILING)
     set(CMAKE_STAGING_PREFIX "${TEMP}")

@@ -7,7 +7,6 @@ cmake_minimum_required(VERSION 3.13)
 project(OpenVINO)
 
 set(OpenVINO_MAIN_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-set(IE_MAIN_SOURCE_DIR ${OpenVINO_MAIN_SOURCE_DIR}/inference-engine)
 
 find_package(IEDevScripts REQUIRED
              PATHS "${OpenVINO_MAIN_SOURCE_DIR}/cmake/developer_package"
@@ -27,7 +26,6 @@ endif()
 message (STATUS "PROJECT ............................... " ${PROJECT_NAME})
 message (STATUS "CMAKE_BINARY_DIR ...................... " ${CMAKE_BINARY_DIR})
 message (STATUS "OpenVINO_MAIN_SOURCE_DIR .............. " ${OpenVINO_MAIN_SOURCE_DIR})
-message (STATUS "IE_MAIN_SOURCE_DIR .................... " ${IE_MAIN_SOURCE_DIR})
 message (STATUS "CMAKE_GENERATOR ....................... " ${CMAKE_GENERATOR})
 message (STATUS "CMAKE_C_COMPILER_ID ................... " ${CMAKE_C_COMPILER_ID})
 message (STATUS "CMAKE_BUILD_TYPE ...................... " ${CMAKE_BUILD_TYPE})
@@ -77,7 +75,6 @@ endfunction()
 
 add_subdirectory(thirdparty)
 add_subdirectory(runtime)
-add_subdirectory(ngraph)
 add_subdirectory(tools)
 add_subdirectory(samples)
 
@@ -109,7 +106,7 @@ function(ie_generate_dev_package_config)
     configure_package_config_file("${OpenVINO_MAIN_SOURCE_DIR}/cmake/templates/InferenceEngineDeveloperPackageConfig.cmake.in"
                                   "${CMAKE_BINARY_DIR}/InferenceEngineDeveloperPackageConfig.cmake"
                                   INSTALL_DESTINATION share # not used
-                                  PATH_VARS "OpenVINO_MAIN_SOURCE_DIR;IE_MAIN_SOURCE_DIR;gflags_BINARY_DIR"
+                                  PATH_VARS "OpenVINO_MAIN_SOURCE_DIR;gflags_BINARY_DIR"
                                   NO_CHECK_REQUIRED_COMPONENTS_MACRO)
 
     configure_file("${OpenVINO_MAIN_SOURCE_DIR}/cmake/templates/InferenceEngineConfig-version.cmake.in"

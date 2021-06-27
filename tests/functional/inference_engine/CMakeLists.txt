@@ -91,9 +91,9 @@ function(ie_headers_compilation_with_custom_flags)
     cmake_parse_arguments(IE_TEST "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
 
     if(IE_TEST_PLUGIN_API)
-        set(IE_TEST_INCLUDE_DIRECTORY "${IE_MAIN_SOURCE_DIR}/runtime/core/plugin_api")
+        set(IE_TEST_INCLUDE_DIRECTORY "${OpenVINO_MAIN_SOURCE_DIR}/runtime/core/plugin_api")
     else()
-        set(IE_TEST_INCLUDE_DIRECTORY "${IE_MAIN_SOURCE_DIR}/include")
+        set(IE_TEST_INCLUDE_DIRECTORY "${OpenVINO_MAIN_SOURCE_DIR}/include")
     endif()
 
     file(GLOB_RECURSE header_files RELATIVE "${IE_TEST_INCLUDE_DIRECTORY}"
