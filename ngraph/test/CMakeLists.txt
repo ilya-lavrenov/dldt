@@ -7,7 +7,7 @@ set(NGRAPH_ONNX_NAMESPACE ngraph_onnx)
 
 add_subdirectory(runtime)
 
-if(NOT NGRAPH_UNIT_TEST_ENABLE)
+if(NOT ENABLE_TESTS)
     message(STATUS "unit tests disabled")
     return()
 endif()
@@ -324,7 +324,7 @@ if (ENABLE_CLDNN AND NGRAPH_UNIT_TEST_BACKENDS_ENABLE)
     endif()
 endif()
 
-if (NGRAPH_INTERPRETER_ENABLE AND NGRAPH_UNIT_TEST_BACKENDS_ENABLE)
+if (NGRAPH_UNIT_TEST_BACKENDS_ENABLE)
     list(APPEND SRC
         builder.cpp
         backend_api.cpp)
@@ -627,10 +627,7 @@ if (NGRAPH_ONNX_EDITOR_ENABLE)
     target_link_libraries(unit-test PRIVATE onnx_editor)
 endif()
 
-if (NGRAPH_INTERPRETER_ENABLE)
-    target_compile_definitions(unit-test PRIVATE NGRAPH_INTERPRETER_ENABLE)
-    target_link_libraries(unit-test PRIVATE interpreter_backend)
-endif()
+target_link_libraries(unit-test PRIVATE interpreter_backend)
 
 install(TARGETS unit-test
         RUNTIME DESTINATION tests

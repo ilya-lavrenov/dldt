@@ -4,10 +4,7 @@
 
 add_subdirectory(c)
 
-if(NGRAPH_PYTHON_BUILD_ENABLE)
-    add_subdirectory(python_ngraph)
-endif()
-
 if(ENABLE_PYTHON)
+    add_subdirectory(python_ngraph)
     add_subdirectory(python_ie)
 endif()

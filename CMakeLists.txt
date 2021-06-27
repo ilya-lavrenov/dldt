@@ -50,12 +50,6 @@ function(build_ngraph)
         endif()
     endfunction()
 
-    if(ENABLE_TESTS AND NOT ANDROID)
-        ngraph_set(NGRAPH_UNIT_TEST_ENABLE ON)
-    else()
-        ngraph_set(NGRAPH_UNIT_TEST_ENABLE OFF)
-    endif()
-
     if(NOT (ANDROID OR WINDOWS_STORE OR (MSVC AND (ARM OR AARCH64)) ))
         ngraph_set(NGRAPH_ONNX_IMPORT_ENABLE ON)
         ngraph_set(NGRAPH_PDPD_FRONTEND_ENABLE ON)
@@ -63,20 +57,6 @@ function(build_ngraph)
         ngraph_set(NGRAPH_ONNX_IMPORT_ENABLE OFF)
         ngraph_set(NGRAPH_PDPD_FRONTEND_ENABLE OFF)
     endif()
-    ngraph_set(NGRAPH_INTERPRETER_ENABLE ON)
-
-    if(ENABLE_PYTHON)
-        ngraph_set(NGRAPH_PYTHON_BUILD_ENABLE ON)
-    else()
-        ngraph_set(NGRAPH_PYTHON_BUILD_ENABLE OFF)
-    endif()
-
-    if(ENABLE_LTO)
-        set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ON)
-    endif()
-
-    add_subdirectory(ngraph)
-    set(NGRAPH_LIBRARIES ngraph PARENT_SCOPE)
 endfunction()
 
 function(openvino_developer_export_targets)
@@ -113,13 +93,12 @@ endfunction()
 
 add_subdirectory(thirdparty)
 add_subdirectory(runtime)
-add_subdirectory(inference-engine)
-build_ngraph()
+add_subdirectory(ngraph)
 add_subdirectory(tools)
 add_subdirectory(samples)
 
 if(ENABLE_TESTS)
-    add_subdirectory(tests/tests_deprecated)
+    add_subdirectory(tests)
 endif()
 
 #
@@ -129,9 +108,7 @@ endif()
 openvino_developer_export_targets(COMPONENT openvino_common TARGETS format_reader ie_samples_utils)
 
 # for Template plugin
-if(NGRAPH_INTERPRETER_ENABLE)
-    openvino_developer_export_targets(COMPONENT ngraph TARGETS ngraph_backend interpreter_backend)
-endif()
+openvino_developer_export_targets(COMPONENT ngraph TARGETS ngraph_backend interpreter_backend)
 
 function(ie_generate_dev_package_config)
     # dummy check that OpenCV is here
@@ -187,9 +164,8 @@ function(register_extra_modules)
 
     # automatically import plugins from the 'plugins' folder
     file(GLOB local_extra_modules "plugins/*")
-    if(NGRAPH_INTERPRETER_ENABLE)
-        list(APPEND local_extra_modules "${OpenVINO_MAIN_SOURCE_DIR}/docs/template_plugin")
-    endif()
+    # add template plugin
+    list(APPEND local_extra_modules "${OpenVINO_MAIN_SOURCE_DIR}/docs/template_plugin")
 
     # detect where IE_EXTRA_MODULES contains folders with CMakeLists.txt
     # other folders are supposed to have sub-folders with CMakeLists.txt

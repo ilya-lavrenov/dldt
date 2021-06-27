@@ -109,7 +109,7 @@ function(add_gtest_libraries)
                           PROPERTIES FOLDER thirdparty)
 endfunction()
 
-if(NGRAPH_UNIT_TEST_ENABLE OR ENABLE_TESTS)
+if(ENABLE_TESTS)
     add_gtest_libraries()
 endif()
 

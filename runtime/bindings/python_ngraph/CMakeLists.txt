@@ -81,7 +81,7 @@ if (TARGET ngraph::onnx_importer)
     add_dependencies(_${PROJECT_NAME} ngraph::onnx_importer)
 endif()
 
-if(NGRAPH_UNIT_TEST_ENABLE)
+if(ENABLE_TESTS)
     add_subdirectory(tests/mock/mock_py_ngraph_frontend)
     add_dependencies(_${PROJECT_NAME} mock_py_ngraph_frontend)
     set_target_properties(mock_py_ngraph_frontend PROPERTIES LIBRARY_OUTPUT_DIRECTORY ${LIBRARY_OUTPUT_DIRECTORY_BIN}
