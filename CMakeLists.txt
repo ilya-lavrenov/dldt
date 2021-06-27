@@ -43,22 +43,6 @@ endforeach()
 # Build
 #
 
-function(build_ngraph)
-    function(ngraph_set option value)
-        if(NOT DEFINED ${option})
-            set(${option} ${value} CACHE BOOL "" FORCE)
-        endif()
-    endfunction()
-
-    if(NOT (ANDROID OR WINDOWS_STORE OR (MSVC AND (ARM OR AARCH64)) ))
-        ngraph_set(NGRAPH_ONNX_IMPORT_ENABLE ON)
-        ngraph_set(NGRAPH_PDPD_FRONTEND_ENABLE ON)
-    else()
-        ngraph_set(NGRAPH_ONNX_IMPORT_ENABLE OFF)
-        ngraph_set(NGRAPH_PDPD_FRONTEND_ENABLE OFF)
-    endif()
-endfunction()
-
 function(openvino_developer_export_targets)
     cmake_parse_arguments(EXPORT "" "COMPONENT" "TARGETS" ${ARGN})
 
