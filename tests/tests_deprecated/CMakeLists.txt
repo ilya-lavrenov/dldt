@@ -2,8 +2,6 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-enable_testing()
-
 if(NOT MSVC)
     ie_add_compiler_flags(-Wno-unused-variable)
 endif()
