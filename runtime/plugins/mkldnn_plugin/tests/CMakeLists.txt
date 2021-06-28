@@ -2,13 +2,18 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+if(CMAKE_COMPILER_IS_GNUCC)
+    ie_add_compiler_flags(-Wno-error=comment -Wno-error=strict-aliasing
+                          -Wno-error=sign-compare)
+endif()
+
 set(TARGET_NAME cpuFuncTests)
 
-add_library(cpuSpecificRtInfo STATIC ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin/utils/rt_info/memory_formats_attribute.hpp
-                                     ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin/utils/rt_info/memory_formats_attribute.cpp)
+add_library(cpuSpecificRtInfo STATIC ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin/src/utils/rt_info/memory_formats_attribute.hpp
+                                     ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin/src/utils/rt_info/memory_formats_attribute.cpp)
 target_link_libraries(cpuSpecificRtInfo PRIVATE ngraph)
 
-set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin)
+set(INCLUDES ${CMAKE_CURRENT_SOURCE_DIR} ${OpenVINO_SOURCE_DIR}/runtime/plugins/mkldnn_plugin/src)
 set(DEPENDENCIES MKLDNNPlugin AutoPlugin)
 set(LINK_LIBRARIES funcSharedTests cpuSpecificRtInfo)
 if (NGRAPH_ONNX_IMPORT_ENABLE AND NOT NGRAPH_USE_PROTOBUF_LITE)

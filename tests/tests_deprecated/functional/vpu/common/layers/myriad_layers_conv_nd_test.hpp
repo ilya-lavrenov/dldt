@@ -407,7 +407,7 @@ private:
     std::string to_string(const std::vector<int>& v) {
         std::stringstream s;
         s << "{";
-        for (int i = 0; i < v.size(); i++) {
+        for (size_t i = 0; i < v.size(); i++) {
             s << (i? ", ": "") << v[i];
         }
         s << "}";

@@ -128,3 +128,7 @@ install(FILES ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfig.cmake
         ${CMAKE_CURRENT_BINARY_DIR}/ngraphConfigVersion.cmake
         DESTINATION "deployment_tools/ngraph/cmake"
         COMPONENT ngraph_dev)
+
+if(ENABLE_TESTS)
+    add_subdirectory(tests)
+endif()

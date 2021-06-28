@@ -76,3 +76,7 @@ install(DIRECTORY ${ONNX_IMPORT_INCLUDE_DIR}/onnx_import
         FILES_MATCHING PATTERN "*.hpp")
 
 export(TARGETS onnx_importer NAMESPACE ngraph:: APPEND FILE "${NGRAPH_TARGETS_FILE}")
+
+if(ENABLE_TESTS)
+    add_subdirectory(unit-tests)
+endif()

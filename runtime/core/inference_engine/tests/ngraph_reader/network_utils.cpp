@@ -218,7 +218,7 @@ namespace FuncTestUtils {
                 ordered_port_maps[{data_from[port_map.from]->getName(), data_to[port_map.to]->getName()}] = port_map;
             }
 
-            return std::move(ordered_port_maps);
+            return ordered_port_maps;
         };
 
         auto get_data_ptrs = [](std::vector<InferenceEngine::DataWeakPtr> &wk_data_ptrs) {
@@ -228,7 +228,7 @@ namespace FuncTestUtils {
                 IE_ASSERT(data_ptr != nullptr);
                 data_ptrs.push_back(data_ptr);
             }
-            return std::move(data_ptrs);
+            return data_ptrs;
         };
 
         auto compare_port_maps = [](
@@ -299,7 +299,7 @@ namespace FuncTestUtils {
             for (auto &it : data) {
                 name_to_data_map[it->getName()] = it;
             }
-            return std::move(name_to_data_map);
+            return name_to_data_map;
         };
 
         auto new_inputs = get_map(ti_new->body.inputs);

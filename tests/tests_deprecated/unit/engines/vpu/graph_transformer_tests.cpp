@@ -81,7 +81,7 @@ void TestModel::createInputs(int numInputs) {
     _model->attrs().set<int>("numInputs", numInputs);
     _inputs.resize(numInputs);
 
-    for (int i = 0; i < numInputs; ++i) {
+    for (size_t i = 0; i < numInputs; ++i) {
         _inputs[i] = _model->addInputData(formatString("Input %d", i), _dataDesc);
     }
 }

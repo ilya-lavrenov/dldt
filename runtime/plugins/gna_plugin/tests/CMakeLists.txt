@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+if(CMAKE_COMPILER_IS_GNUCC)
+    ie_add_compiler_flags(-Wno-error=sign-compare)
+endif()
+
 set(TARGET_NAME gnaFuncTests)
 
 addIeTargetTest(

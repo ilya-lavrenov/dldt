@@ -14,9 +14,6 @@ add_subdirectory(common)
 
 if(ENABLE_MYRIAD)
     add_subdirectory(graph_transformer)
-    add_subdirectory(
-            "${OpenVINO_SOURCE_DIR}/thirdparty/movidius"
-            "${CMAKE_CURRENT_BINARY_DIR}/thirdparty/movidius")
 
     #
     # Build plugins

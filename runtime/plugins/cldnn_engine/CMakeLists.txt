@@ -2,6 +2,8 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+project(GPUPlugin)
+
 add_subdirectory(3rdparty EXCLUDE_FROM_ALL)
 add_subdirectory(src)
 

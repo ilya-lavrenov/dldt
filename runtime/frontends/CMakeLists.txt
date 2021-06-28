@@ -45,9 +45,6 @@ if (NGRAPH_ONNX_IMPORT_ENABLE OR USE_STATIC_PROTOBUF)
 endif()
 
 if(NOT WIN32)
-    message(${CMAKE_CURRENT_SOURCE_DIR}/cmake_static_protobuf)
-    message(BINARY ${CMAKE_CURRENT_BINARY_DIR})
-
     # There seems no suitable other way to identify exact output binary name for libprotobuf
     if(CMAKE_BUILD_TYPE STREQUAL "Debug")
         # Use 'protobufd' directly as it is done in the same way in protobuf cmake files
@@ -56,8 +53,6 @@ if(NOT WIN32)
     else(CMAKE_BUILD_TYPE STREQUAL "Debug")
         set(PROTOBUF_STATIC_LIB_OUTPUT ${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/${CMAKE_STATIC_LIBRARY_PREFIX}protobuf${CMAKE_STATIC_LIBRARY_SUFFIX})
     endif()
-
-    message("Static protobuf lib: ${PROTOBUF_STATIC_LIB_OUTPUT}")
 
     file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/libprotobuf_static)
     add_custom_command(

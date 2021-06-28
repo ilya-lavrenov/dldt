@@ -98,28 +98,6 @@ TEST_P(GroupDeconvolutionLayerCPUTest, CompareWithRefs) {
 
 namespace {
 
-/* GROUP CONV TEST UTILS */
-std::vector<groupDeconvLayerCPUTestParamsSet> filterParamsSetForDevice(std::vector<groupDeconvLayerCPUTestParamsSet> paramsSet) {
-    std::vector<groupDeconvLayerCPUTestParamsSet> resParamsSet;
-    const int cpuParamsIndex = 1;
-    const int selectedTypeIndex = 3;
-
-    for (auto param : paramsSet) {
-        auto cpuParams = std::get<cpuParamsIndex>(param);
-        auto selectedTypeStr = std::get<selectedTypeIndex>(cpuParams);
-
-        if (selectedTypeStr.find("jit") != std::string::npos && !with_cpu_x86_sse42())
-            continue;
-        if (selectedTypeStr.find("avx512") != std::string::npos && !with_cpu_x86_avx512f())
-            continue;
-
-        resParamsSet.push_back(param);
-    }
-
-    return resParamsSet;
-}
-/* ===================== */
-
 /* COMMON PARAMS */
 std::vector<fusingSpecificParams> fusingParamsSet {
         emptyFusingSpec,

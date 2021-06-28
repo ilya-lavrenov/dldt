@@ -597,8 +597,8 @@ if (NGRAPH_ONNX_IMPORT_ENABLE AND NOT NGRAPH_USE_PROTOBUF_LITE)
     target_compile_definitions(unit-test
         PRIVATE $<TARGET_PROPERTY:onnx,INTERFACE_COMPILE_DEFINITIONS>)
 
-    get_target_property(ONNX_IMPORTER_SRC_DIR onnx_importer SOURCE_DIR)
-    target_include_directories(unit-test PRIVATE ${ONNX_IMPORTER_SRC_DIR}/src)
+    # TODO: create separate tests for ONNX importer
+    target_include_directories(unit-test PRIVATE ${OpenVINO_SOURCE_DIR}/runtime/frontends/onnx_importer/src)
 endif()
 
 if(NOT WIN32)

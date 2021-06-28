@@ -29,8 +29,8 @@ using KeepDims = bool;
 using ReduceType = std::shared_ptr<ngraph::Node>;
 
 struct ReduceToPoolParams {
-    std::vector<int64_t> reshape_begin, reshape_end;
     ngraph::Shape pooling_kernel;
+    std::vector<int64_t> reshape_begin, reshape_end;
 
     ReduceToPoolParams() = default;
 

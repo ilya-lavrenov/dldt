@@ -222,7 +222,7 @@ public:
         auto input_shape = get_input_partial_shape(0).to_shape();
 
         ngraph::Shape output_shape(input_shape);
-        for (int i = 0; i < input_shape.size(); ++i) {
+        for (size_t i = 0; i < input_shape.size(); ++i) {
             output_shape[i] = input_shape[i] * test2 + (test1 ? 0 : 1);
         }
 

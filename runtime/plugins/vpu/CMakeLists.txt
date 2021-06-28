@@ -2,11 +2,13 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+project(VPUPlugins)
+
 if(ENABLE_MYRIAD)
     include(cmake/vpu_dependencies.cmake)
+    add_subdirectory(3rdparty)
 endif()
 
-add_subdirectory(3rdparty)
 add_subdirectory(src)
 
 if(ENABLE_TESTS)

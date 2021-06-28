@@ -60,23 +60,6 @@ const std::vector<float> fqInputMax = {10, 7};
 const std::vector<float> fqOutputMin = {1, 3};
 const std::vector<float> fqOutputMax = {7, 6};
 
-std::vector<std::vector<float>> getInputOutputShapes(const std::vector<float> inputsMin,
-        const std::vector<float> inputsMax,
-        const std::vector<float> OutputsMin,
-        const std::vector<float> OutputsMax,
-        std::vector<std::vector<float>> fqArg) {
-    for (const auto& inputMin : inputsMin) {
-        for (const auto& inputMax : inputsMax) {
-            for (const auto& outputMin : OutputsMin) {
-                for (const auto& outputMax : OutputsMax) {
-                    fqArg.push_back({inputMin, inputMax, outputMin, outputMax});
-                }
-            }
-        }
-    }
-    return fqArg;
-}
-
 const auto fqParams = ::testing::Combine(
     ::testing::ValuesIn(levels),
     ::testing::ValuesIn(constShapes),

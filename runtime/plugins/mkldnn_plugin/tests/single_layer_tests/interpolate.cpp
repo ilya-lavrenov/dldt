@@ -76,7 +76,6 @@ protected:
         std::tie(mode, shapeCalcMode, coordinateTransformMode, nearestMode, antialias, padBegin, padEnd, cubeCoef, axes, scales) = interpolateParams;
         inPrc = outPrc = netPrecision;
         configuration.insert(additionalConfig.begin(), additionalConfig.end());
-        using ShapeCalcMode = ngraph::op::v4::Interpolate::ShapeCalcMode;
 
         auto ngPrc = FuncTestUtils::PrecisionUtils::convertIE2nGraphPrc(netPrecision);
         auto params = ngraph::builder::makeParams(ngPrc, {inputShape});

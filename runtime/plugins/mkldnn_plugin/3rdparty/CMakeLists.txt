@@ -15,7 +15,7 @@ if (ANDROID OR ((CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") AND NOT (THREADING STREQ
     set(OpenMP_cmake_included ON) ## to skip "omp simd" inside a code. Lead to some crashes inside NDK LLVM..
 endif()
 
-add_subdirectory(onednn-cpu EXCLUDE_FROM_ALL)
+add_subdirectory(oneDNN EXCLUDE_FROM_ALL)
 add_library(mkldnn ALIAS dnnl)
 
 if((CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") AND (MSVC_VERSION VERSION_GREATER_EQUAL "1910"))

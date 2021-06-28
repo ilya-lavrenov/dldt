@@ -149,7 +149,7 @@ void TestModel::createInputs(std::vector<DataDesc> descriptors) {
     _model->attrs().set<int>("numInputs", numInputs);
     _inputs.resize(numInputs);
 
-    for (int i = 0; i < numInputs; ++i) {
+    for (size_t i = 0; i < numInputs; ++i) {
         _inputs[i] = _model->addInputData(formatString("Input %d", i), inputDescs[i]);
     }
 }
@@ -161,7 +161,7 @@ void TestModel::createOutputs(std::vector<DataDesc> descriptors) {
     _model->attrs().set<int>("numOutputs", numOutputs);
     _outputs.resize(numOutputs);
 
-    for (int i = 0; i < numOutputs; ++i) {
+    for (size_t i = 0; i < numOutputs; ++i) {
         _outputs[i] = _model->addOutputData(formatString("Output %d", i), outputDescs[i]);
     }
 }
