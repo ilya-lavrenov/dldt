@@ -62,14 +62,14 @@ if (ENABLE_MYRIAD)
             engines/vpu/myriad_tests/*cpp
             engines/vpu/myriad_tests/helpers/*cpp
             engines/vpu/myriad_tests/helpers/*h
-            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin/*.cpp
-            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin/configuration/*.cpp
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/src/myriad_plugin/*.cpp
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/src/myriad_plugin/configuration/*.cpp
             )
     include_directories(
             engines/vpu/myriad_tests/helpers
-            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin
-            ${OpenVINO_SOURCE_DIR}/thirdparty/movidius
-            ${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include/watchdog
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/src/myriad_plugin
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/3rdparty
+            ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/3rdparty/mvnc/include/watchdog
             ${XLINK_INCLUDE}
             ${XLINK_PLATFORM_INCLUDE})
 

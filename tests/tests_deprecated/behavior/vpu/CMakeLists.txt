@@ -55,11 +55,12 @@ function(enable_vpu TARGET_NAME FLAG_NAME PLUGIN_NAME)
         target_compile_definitions(${TARGET_NAME} PRIVATE __PC__)
 
         target_include_directories(${TARGET_NAME} PRIVATE
-                ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/common/include
+                ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/src/common/include
                 ${CMAKE_CURRENT_SOURCE_DIR}/myriad_tests
-                ${OpenVINO_SOURCE_DIR}/thirdparty/movidius
-                ${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include
-                ${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include/watchdog
+                $<TARGET_PROPERTY:vpu_graph_transformer,INTERFACE_INCLUDE_DIRECTORIES>
+                ${VPUPlugins_SOURCE_DIR}/3rdparty/
+                ${VPUPlugins_SOURCE_DIR}/3rdparty/mvnc/include
+                ${VPUPlugins_SOURCE_DIR}/3rdparty/mvnc/include/watchdog
                 ${XLINK_INCLUDE}
                 ${XLINK_PLATFORM_INCLUDE})
         target_link_libraries(${TARGET_NAME} PRIVATE mvnc)

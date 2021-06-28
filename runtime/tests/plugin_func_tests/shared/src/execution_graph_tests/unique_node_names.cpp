@@ -88,8 +88,9 @@ TEST_P(ExecGraphUniqueNodeNames, CheckUniqueNodeNames) {
         }
     }
 
-    if (targetDevice != "GPU" )
+    if (targetDevice != "GPU") {
         ASSERT_TRUE(numReorders == expectedReorders) << "Expected reorders: " << expectedReorders << ", actual reorders: " << numReorders;
+    }
 
     fnPtr.reset();
 };

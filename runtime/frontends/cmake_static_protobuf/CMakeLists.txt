@@ -16,7 +16,7 @@ set(BUILD_SHARED_LIBS OFF)
 set(BUILD_STANDALONE_STATIC ON)
 set(USE_STATIC_PROTOBUF ON)
 
-include(${OpenVINO_SOURCE_DIR}/ngraph/cmake/external_protobuf.cmake)
+include(${OpenVINO_SOURCE_DIR}/thirdparty/cmake/external_protobuf.cmake)
 
 set(BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS_OLD})
 set(BUILD_STANDALONE_STATIC ${BUILD_STANDALONE_STATIC_OLD})

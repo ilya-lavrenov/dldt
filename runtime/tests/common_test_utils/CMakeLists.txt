@@ -10,8 +10,6 @@ function(add_common_utils ADD_TARGET_NAME)
             NAME ${ADD_TARGET_NAME}
             TYPE STATIC
             ROOT ${CMAKE_CURRENT_SOURCE_DIR}
-            EXCLUDED_SOURCE_PATHS
-                ${CMAKE_CURRENT_SOURCE_DIR}/gtest
             ADD_CPPLINT
             DEVELOPER_PACKAGE
                 inference_engine_tests
@@ -54,7 +52,7 @@ function(add_common_utils ADD_TARGET_NAME)
 
     target_include_directories(${ADD_TARGET_NAME}
         PUBLIC
-            ${IE_TESTS_ROOT}/ie_test_utils
+            ${IE_TESTS_ROOT}
             $<TARGET_PROPERTY:inference_engine,INTERFACE_INCLUDE_DIRECTORIES>
         PRIVATE
             $<TARGET_PROPERTY:inference_engine_legacy,INTERFACE_INCLUDE_DIRECTORIES>

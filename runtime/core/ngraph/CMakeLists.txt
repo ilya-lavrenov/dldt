@@ -8,8 +8,6 @@ set(NGRAPH_INCLUDE_PATH
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-add_definitions(-DIN_NGRAPH_LIBRARY)
-
 file(GLOB_RECURSE LIBRARY_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp
                               ${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp)
 file(GLOB_RECURSE PUBLIC_HEADERS ${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp)
@@ -27,6 +25,8 @@ configure_file(include/ngraph/version.in.hpp include/ngraph/version.hpp)
 
 # Create static or shared library depending on BUILD_SHARED_LIBS
 add_library(ngraph ${LIBRARY_SRC} ${PUBLIC_HEADERS})
+
+target_compile_definitions(ngraph PRIVATE IN_NGRAPH_LIBRARY)
 
 ie_faster_build(ngraph
     UNITY

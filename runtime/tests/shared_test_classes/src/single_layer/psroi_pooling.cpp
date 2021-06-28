@@ -46,15 +46,11 @@ static int randInt(int low, int high) {
                           float spatialScale, int spatialBinsX, int spatialBinsY, const std::string& mode) {
     int minRoiWidth = groupSize;
     int maxRoiWidth = width / groupSize * groupSize;
-    int minRoiHeight = groupSize;
-    int maxRoiHeight = height / groupSize * groupSize;
     float scaleX = spatialScale;
     float scaleY = spatialScale;
     if (mode == "bilinear") {
         minRoiWidth = spatialBinsX;
         maxRoiWidth = width / spatialBinsX * spatialBinsX;
-        minRoiHeight = spatialBinsY;
-        maxRoiHeight = height / spatialBinsY * spatialBinsY;
         scaleX *= width;
         scaleY *= height;
     }

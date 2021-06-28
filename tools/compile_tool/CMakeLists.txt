@@ -11,8 +11,8 @@ file(GLOB SRCS
 add_executable(${TARGET_NAME} ${SRCS})
 
 target_include_directories(${TARGET_NAME} SYSTEM PRIVATE
-    ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/graph_transformer/include
-    ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/common/include
+    ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/src/graph_transformer/include
+    ${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/src/common/include
     ${OpenVINO_SOURCE_DIR}/runtime/core/plugin_api
 )
 

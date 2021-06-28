@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
+if(CMAKE_COMPILER_IS_GNUCC)
+    ie_add_compiler_flags(-Wno-error=reorder -Wno-error=sign-compare)
+endif()
+
 # because unit tests use plugins object files compiled with LTO
 if(CMAKE_COMPILER_IS_GNUCC AND CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 9.0)
     set(CMAKE_INTERPROCEDURAL_OPTIMIZATION_RELEASE ${ENABLE_LTO})
@@ -16,11 +20,11 @@ addIeTargetTest(
         ROOT ${CMAKE_CURRENT_SOURCE_DIR}
         ADDITIONAL_SOURCE_DIRS
             # because ngraphFunctions sources need to be compiled with LTO as well
-            "${IE_TESTS_ROOT}/ngraph_helpers/ngraph_functions/src"
+            "${OpenVINO_SOURCE_DIR}/runtime/tests/ngraph_functions/src"
         INCLUDES
             "${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/myriad_plugin"
-            "${OpenVINO_SOURCE_DIR}/thirdparty/movidius"
-            "${OpenVINO_SOURCE_DIR}/thirdparty/movidius/mvnc/include/watchdog"
+            "${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/3rdparty/"
+            "${OpenVINO_SOURCE_DIR}/runtime/plugins/vpu/3rdparty/mvnc/include/watchdog"
             "${XLINK_INCLUDE}"
             "${XLINK_PLATFORM_INCLUDE}"
             "${CMAKE_CURRENT_SOURCE_DIR}/base"

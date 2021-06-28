@@ -52,7 +52,7 @@ public:
     ptrdiff_t size(int start) const {
         ptrdiff_t size = 1;
 
-        for (int i = start; i < dims.size(); i++) {
+        for (size_t i = start; i < dims.size(); i++) {
             size *= dims[i];
         }
 

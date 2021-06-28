@@ -48,7 +48,7 @@ inline std::vector<int> CNNLayerFindInsDataIdxes(DataPtr sourceData, CNNLayerPtr
         if (outLayer.second.get() != layer.get()) {
             continue;
         }
-        for (int j = 0; j < layer->insData.size(); j++) {
+        for (size_t j = 0; j < layer->insData.size(); j++) {
             if (areEqualDatas(layer->insData[j].lock(), sourceData)) {
                 dataIdxes.push_back(j);
             }
@@ -456,6 +456,11 @@ inline void CNNNetSwapLayers(InferenceEngine::CNNLayerPtr lhs,
     lhs->outData.front()->setDims(rhs->outData.front()->getDims());
 }
 
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-compare"
+#endif
+
 /**
 * @brief changes the Tensor Desctiption if data by created a new one with correct description and replacing original one
 */
@@ -482,6 +487,10 @@ inline DataPtr CNNReplaceDataWithChangedTensorDescription(DataPtr old_data, Tens
     }
     return new_dataPtr;
 }
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 /**
 * @brief Creates a Reshape with given name and tensor description
@@ -587,7 +596,8 @@ inline void CNNNetworkInsertLayer(CNNLayerPtr after,
         // if given outputDataIndex is not correct, lets find index that matches *before* layer
         if (!bLocated) {
             if (before != nullptr) {
-                IE_ASSERT(before->insData.size() == 1 || inDataIndex != invalid_data_idx && inDataIndex < before->insData.size());
+                IE_ASSERT(before->insData.size() == 1 ||
+                    (inDataIndex != invalid_data_idx && inDataIndex < before->insData.size()));
                 auto prevLayer = after;
                 for (auto idx = prevLayer->outData.begin(); idx != prevLayer->outData.end(); idx++) {
                     auto &outputports = getInputTo(*idx);
@@ -686,7 +696,7 @@ inline void CNNNetworkRemoveLayer(CNNLayerPtr layer, bool checkDims = true) {
 
     // remove osp->layer connection
     for (auto  && outData : getInputTo(osp)) {
-        for (int i = 0; i < outData.second->insData.size(); i++) {
+        for (size_t i = 0; i < outData.second->insData.size(); i++) {
             auto insData = outData.second->insData[i].lock();
             if (!insData) {
                 IE_THROW() << "Cannot remove layer : "<< layer->name <<", its output layer(" <<

@@ -21,8 +21,7 @@ file(GLOB_RECURSE SHARED_SRC "${XLINK_ROOT_DIR}/shared/*.c")
 list(APPEND XLINK_SOURCES ${PC_SRC} ${PC_PROTO_SRC} ${SHARED_SRC})
 
 if(WIN32)
-    set(XLINK_PLATFORM_INCLUDE
-            ${XLINK_ROOT_DIR}/pc/Win/include)
+    set(XLINK_PLATFORM_INCLUDE ${XLINK_ROOT_DIR}/pc/Win/include)
 
     file(GLOB XLINK_PLATFORM_SRC "${XLINK_ROOT_DIR}/pc/Win/src/*.c")
     list(APPEND XLINK_SOURCES ${XLINK_PLATFORM_SRC})
@@ -36,8 +35,7 @@ else()
         message(FATAL_ERROR "libusb is required")
     endif()
 
-    set(XLINK_PLATFORM_INCLUDE
-            ${XLINK_ROOT_DIR}/pc/MacOS)
+    set(XLINK_PLATFORM_INCLUDE ${XLINK_ROOT_DIR}/pc/MacOS)
     list(APPEND XLINK_SOURCES "${XLINK_ROOT_DIR}/pc/MacOS/pthread_semaphore.c")
 endif(WIN32)
 

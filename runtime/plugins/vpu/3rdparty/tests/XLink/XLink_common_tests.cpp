@@ -261,7 +261,7 @@ TEST_F(XLinkFindAllSuitableDevicesTests, CanFindTwoDeviceDifferentState_USB_PCIE
                   XLINK_MAX_DEVICES, &numOfFoundDevices));
 
     bool foundBootedDevice = false;
-    for (int i = 0; i < numOfFoundDevices; ++i) {
+    for (unsigned int i = 0; i < numOfFoundDevices; ++i) {
         if (deviceDescArray[i].platform == X_LINK_ANY_PLATFORM)
             foundBootedDevice = true;
     }

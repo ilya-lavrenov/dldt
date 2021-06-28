@@ -16,3 +16,7 @@ add_subdirectory(core)
 add_subdirectory(plugins)
 add_subdirectory(frontends)
 add_subdirectory(bindings)
+
+if(ENABLE_TESTS)
+    add_subdirectory(tests)
+endif()

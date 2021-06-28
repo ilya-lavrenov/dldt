@@ -42,7 +42,7 @@ public:
         std::list<cnt_type> permuteCycles;
         bool newSeq = false;
 
-        for (int i = 0; i != orderVec.size();) {
+        for (size_t i = 0; i != orderVec.size();) {
             // we have this permutation on the list already
             if (counter[i]) {
                 newSeq = false;
@@ -66,7 +66,7 @@ public:
         }
 
         for (auto && cycle : permuteCycles) {
-            for (int i = 0; i + 1 < cycle.size(); i++) {
+            for (size_t i = 0; i + 1 < cycle.size(); i++) {
                 permutes.push_back(cycle[i]);
             }
         }

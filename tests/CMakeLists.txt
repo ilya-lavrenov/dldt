@@ -4,10 +4,4 @@
 
 set(IE_TESTS_ROOT ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_subdirectory(ie_test_utils)
-
-if(ENABLE_FUNCTIONAL_TESTS)
-    add_subdirectory(functional)
-endif()
-
 add_subdirectory(tests_deprecated)
